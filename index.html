@@ -1,0 +1,34 @@
+
+<!DOCTYPE html> 
+<html> 
+ 
+  <head> 
+    <title>Backbone Demo: Todos</title> 
+    <script src="http://documentcloud.github.com/backbone/test/vendor/json2.js"></script> 
+    <script src="http://documentcloud.github.com/backbone/test/vendor/jquery-1.4.2.js"></script> 
+    <script src="http://documentcloud.github.com/backbone/test/vendor/underscore-1.1.3.js"></script> 
+    <script src="http://documentcloud.github.com/backbone/backbone.js"></script> 
+    <script src="http://documentcloud.github.com/backbone/examples/backbone-localstorage.js"></script> 
+    <script src="app/models/feed_item.js"></script> 
+    <script src="app/collections/feed_list.js"></script> 
+    <script src="app/views/feed.js"></script> 
+  </head> 
+ 
+  <body> 
+	  <div>
+	    Feed List
+		  <ul id="feed-items">
+		  </ul>
+	  </div>
+	  
+	  <script>
+      var FeedItems = new FeedListCollection;	  
+      var App = new FeedView(FeedItems);      	  
+      FeedItems.add(new FeedItemModel({graph : "abc"}));
+      FeedItems.add(new FeedItemModel({graph : "def"}));
+      FeedItems.add(new FeedItemModel({graph : "ghi"}));
+      FeedItems.create({graph : "foo"});
+	  </script>
+  </body> 
+ 
+</html> 
