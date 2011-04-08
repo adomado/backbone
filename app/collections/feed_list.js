@@ -6,6 +6,6 @@ var FeedListCollection = Backbone.Collection.extend({
   
   items : function() {
 	  // returns all feedItems
-  }
+  } 
   
 });

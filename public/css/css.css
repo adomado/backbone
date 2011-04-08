@@ -1,0 +1,28 @@
+.comment-text {
+  font-size: 14px;
+}
+
+#comments tr {
+  vertical-align: top; 
+}
+
+a {
+  color: inherit;
+}
+
+#fb-loading-bottom {
+  position: relative;
+  top: 3px;
+  display:none;
+}
+
+#fb-like-spinner {
+  position: relative;
+  top: 4px;
+}
+
+.hidden {
+  display: none;
+  position: relative;
+  top: 9px;
+}
