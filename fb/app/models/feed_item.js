@@ -10,6 +10,9 @@ var FeedItemModel = Backbone.Model.extend({
   
   like : function() {
     this.set({liked : true});
+    new FBAction().like(this.graphItem.id, function(graphItemId) {
+      console.log(graphItemId);
+    });
   },
   
   
