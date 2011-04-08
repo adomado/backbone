@@ -27,7 +27,7 @@
 	    var FeedList, FeedApp, fbAuth, fbFeed, CurrentFeedItem;
       fbAuth = new FBAuth("21577534106", document.location.href, function() { console.log("TODO - auth reinforce needed"); });
       
-	    $(function() {
+	    $(document).ready(function() {
         FeedList = new FeedListCollection;	  
         FeedApp = new FeedView(FeedList);     	  
       });
@@ -185,9 +185,9 @@
 	      </div>		  
 	      	    
         <div data-inline="true" style="text-align:right; float:right;">
-          <img src="public/images/spinner-small-black.gif" id="fb-like-spinner" class="hidden">	  
+          <!--<img src="public/images/spinner-small-black.gif" id="fb-like-spinner" class="hidden">	  
           <a id="unlike-button" href="javascript:void(0);" class="hidden" data-role="button" data-inline="true" data-icon="delete">Unlike</a>
-          <img src="public/images/ok.png" id="fb-like-ok" class="hidden">	  
+          <img src="public/images/ok.png" id="fb-like-ok" class="hidden">-->
 	        <a id="like-button" href="javascript:void(0);" data-role="button" data-inline="true" data-icon="star">Like</a>
         </div>
         <div data-inline="true" style="text-align:left; float:left;">

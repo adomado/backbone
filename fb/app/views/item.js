@@ -1,12 +1,11 @@
 // View
 var ItemView = Backbone.View.extend({
 
-  events : {
-    "cick #like-button" : "like"
-  },
-  
   initialize : function(feedItemId) {
-    this.feedItem = window.FeedList.get(feedItemId).get("graphItem");
+    _.bindAll(this, "onLikeChanged"); // proxy the 'this' context back to the ItemView object
+    this.feedItem = window.FeedList.get(feedItemId)
+    this.graphItem = this.feedItem.get("graphItem");
+    this.feedItem.bind("change:liked", this.onLikeChanged);    
     this.renderItemDetail();
   },
   
@@ -14,25 +13,27 @@ var ItemView = Backbone.View.extend({
   renderItemDetail : function() {
     // this should point to the item clicked
     var feedItemData = {
-      title: this.feedItem.message || this.feedItem.name,
-      fromUserPic : "http://graph.facebook.com/" + this.feedItem.from.id + "/picture?type=normal",
-      fromUserName : this.feedItem.from.name,      
-      description : this.feedItem.description || this.feedItem.caption,
-      picture : this.feedItem.picture || false,
-      likeCount : this.feedItem.likes ? this.feedItem.likes.count : false,
-      likePlural : (this.feedItem.likes && this.feedItem.likes.count > 1) ? true : false,
-      commentCount : this.feedItem.comments ? this.feedItem.comments.count : false,
-      commentPlural : (this.feedItem.comments && this.feedItem.comments.count > 1) ? true : false,
-      fromUserProfile : "http://www.facebook.com/profile.php?id=" + this.feedItem.from.id,
-      permalink : this.feedItem.actions[0].link,
-      itemId : this.feedItem.id,
-      linkTo : this.feedItem.link
+      title: this.graphItem.message || this.graphItem.name,
+      fromUserPic : "http://graph.facebook.com/" + this.graphItem.from.id + "/picture?type=normal",
+      fromUserName : this.graphItem.from.name,      
+      description : this.graphItem.description || this.graphItem.caption,
+      picture : this.graphItem.picture || false,
+      likeCount : this.graphItem.likes ? this.graphItem.likes.count : false,
+      likePlural : (this.graphItem.likes && this.graphItem.likes.count > 1) ? true : false,
+      commentCount : this.graphItem.comments ? this.graphItem.comments.count : false,
+      commentPlural : (this.graphItem.comments && this.graphItem.comments.count > 1) ? true : false,
+      fromUserProfile : "http://www.facebook.com/profile.php?id=" + this.graphItem.from.id,
+      permalink : this.graphItem.actions[0].link,
+      itemId : this.graphItem.id,
+      linkTo : this.graphItem.link
     };    
     
     $("#fb-feed-item-detail").html(ich.fbFeedItemDetail(feedItemData));  
     
     this.renderItemComments();
-    $("#fb-feed-item-detail").autolink();    
+    $("#fb-feed-item-detail").autolink();
+    
+    $("#like-button").live("click", jQuery.proxy(this.like, this));  // proxy saves the 'this' context
   },
   
   
@@ -40,14 +41,14 @@ var ItemView = Backbone.View.extend({
     var appendToId = "#comments";
     $(appendToId).html(""); // cleanup
     
-    if(this.feedItem.comments && this.feedItem.comments.data && this.feedItem.comments.data.length > 0)
+    if(this.graphItem.comments && this.graphItem.comments.data && this.graphItem.comments.data.length > 0)
     {
-      var comments = this.feedItem.comments.data;
+      var comments = this.graphItem.comments.data;
       for(var i=0; i<comments.length; i++)
         this.renderComment(comments[i], appendToId);
         
-      if(this.feedItem.comments.count > this.feedItem.comments.data.length)
-        $("#more-comments").attr("href", this.feedItem.actions[0].link).show();      
+      if(this.graphItem.comments.count > this.graphItem.comments.data.length)
+        $("#more-comments").attr("href", this.graphItem.actions[0].link).show();      
         
       $("#fb-feed-item-comments").show();        
     }
@@ -68,7 +69,13 @@ var ItemView = Backbone.View.extend({
   
   
   like : function() {
-    console.log("foo");
+    this.feedItem.set({"liked" : true});
+  },
+  
+  
+  onLikeChanged : function() {
+    console.log(this.graphItem.id + "got liked!");
   }
+  
   
 });
