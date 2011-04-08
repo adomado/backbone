@@ -24,12 +24,12 @@
   	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4/jquery.mobile-1.0a4.min.js"></script>    
 
 	  <script>
-	    var FeedList, FeedApp, fbAuth, fbFeed;
+	    var FeedList, FeedApp, fbAuth, fbFeed, CurrentFeedItem;
       fbAuth = new FBAuth("21577534106", document.location.href, function() { console.log("TODO - auth reinforce needed"); });
-	    
-	    $(function(){
+      
+	    $(function() {
         FeedList = new FeedListCollection;	  
-        FeedApp = new FeedView(FeedList);      	  
+        FeedApp = new FeedView(FeedList);     	  
       });
 	  </script>  	
   	
@@ -41,7 +41,7 @@
     <div data-role="page" id="fb-feed-page" data-theme="b">
       <script id="fbFeedItem" type="text/html">
         <li class="ui-li-has-icon">
-          <a class="fb-feed-item" href="#fb-feed-item-page" id={{itemId}} onclick="fbFeedRenderer.setCurrentFeedItem('{{itemId}}');" data-rel="dialog" data-transition="slide">
+          <a class="fb-feed-item" href="#fb-feed-item-page" id={{itemId}} onclick="new ItemView('{{itemId}}');" data-rel="dialog" data-transition="slide">
             <img src="{{fromUserPic}}" class="ui-li-icon"/>
             <p style="padding-top:6px; padding-left: 20px;">
               <b>{{title}}</b><br/>
@@ -185,9 +185,9 @@
 	      </div>		  
 	      	    
         <div data-inline="true" style="text-align:right; float:right;">
-          <img src="./assets/spinner-small-black.gif" id="fb-like-spinner" class="hidden">	  
+          <img src="public/images/spinner-small-black.gif" id="fb-like-spinner" class="hidden">	  
           <a id="unlike-button" href="javascript:void(0);" class="hidden" data-role="button" data-inline="true" data-icon="delete">Unlike</a>
-          <img src="./assets/ok.png" id="fb-like-ok" class="hidden">	  
+          <img src="public/images/ok.png" id="fb-like-ok" class="hidden">	  
 	        <a id="like-button" href="javascript:void(0);" data-role="button" data-inline="true" data-icon="star">Like</a>
         </div>
         <div data-inline="true" style="text-align:left; float:left;">
@@ -197,7 +197,6 @@
 	    
 	    <script>
         $('#fb-feed-item-page').live('pagehide', function(event, ui) {
-          currentFbFeedItem = undefined;
           $("#fb-feed-item-comments").hide();
           return true;
         });
@@ -205,12 +204,10 @@
         $('#fb-feed-item-page').live('pagebeforeshow', function(event, ui) {
           if(fbAuth.needAuth() == true)
             $("#auth-url").attr("href", fbAuth.getAuthUrl()).show();
-          if(currentFbFeedItem == undefined)
-            $.mobile.changePage($("#fb-feed-page"));    
                   
-          fbFeedRenderer.renderItemDetail(currentFbFeedItem, "#fb-feed-item-detail");
-          fbFeedRenderer.renderItemComments(currentFbFeedItem, "#comments");
-          $("#fb-feed-item-detail").autolink();
+          //fbFeedRenderer.renderItemDetail(currentFbFeedItem, "#fb-feed-item-detail");
+          //fbFeedRenderer.renderItemComments(currentFbFeedItem, "#comments");
+          //$("#fb-feed-item-detail").autolink();
         });
         
         $('#fb-feed-item-page').live('pageshow', function(event, ui) {

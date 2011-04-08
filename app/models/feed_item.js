@@ -3,14 +3,16 @@ var FeedItemModel = Backbone.Model.extend({
 
   initialize : function(id, graphItem) {
 	  this.graphItem = graphItem;
+	  this.isCurrent = false;
   },
-
-  like : function() {
-	  // Like this feedItem
+  
+  setAsCurrent : function() {
+    this.set({isCurrent : true});
   },
-
-  comment : function(message) {
-	  // comment on this feed item
+  
+  unsetAsCurrent : function() {
+    this.set({isCurrent : false});
   }
-
+  
+  
 });

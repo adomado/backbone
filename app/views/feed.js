@@ -2,9 +2,11 @@
 var FeedView = Backbone.View.extend({
 
   initialize : function(feedItemsCollection) {
+    _.bindAll(this, "render");  // maintain context when this.render is bound as a callback
+    
     this.collection = feedItemsCollection;
 	  this.collection.bind("add", this.render);
-	  
+
 	  window.fbFeed = new FBFeed(this, undefined, function(_this, graphItems, graphPaging) { // _this is a proxy to 'this'
       for(var i=0; i<graphItems.length; i++)
         _this.collection.create({id : graphItems[i].id, graphItem : graphItems[i]});
@@ -15,6 +17,7 @@ var FeedView = Backbone.View.extend({
   },
   
 
+  // Renders the feed list, one item at a time
   render : function(feedItem) {
     feedItem = feedItem.get("graphItem"); // get the attribute from the model
     var feedItemData = {
@@ -31,7 +34,7 @@ var FeedView = Backbone.View.extend({
     
 	  $("#fb-feed").append(ich.fbFeedItem(feedItemData));
 	  return this;
-  }  
+  }
   
 });
 
