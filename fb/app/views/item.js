@@ -7,6 +7,12 @@ var ItemView = Backbone.View.extend({
     this.graphItem = this.feedItem.get("graphItem");
     this.feedItem.bind("change:liked", this.onLikeChanged);    
     this.renderItemDetail();
+    
+    $('#fb-feed-item-page').live('pagehide', function(event, ui) {
+      $("#fb-feed-item-comments").hide();
+      $("#like-button").die("click"); // so that we saftely disconnect from a previously viewed feedItem
+      return true;
+    });    
   },
   
   
@@ -27,7 +33,6 @@ var ItemView = Backbone.View.extend({
       itemId : this.graphItem.id,
       linkTo : this.graphItem.link
     };    
-    
     $("#fb-feed-item-detail").html(ich.fbFeedItemDetail(feedItemData));  
     
     this.renderItemComments();
@@ -50,8 +55,9 @@ var ItemView = Backbone.View.extend({
       if(this.graphItem.comments.count > this.graphItem.comments.data.length)
         $("#more-comments").attr("href", this.graphItem.actions[0].link).show();      
         
-      $("#fb-feed-item-comments").show();        
+      $("#fb-feed-item-comments").show();
     }
+    this.feedItem.isLiked() == true ? $("#fb-like-ok").show() : $("#fb-like-ok").hide();    
   },
   
   
@@ -69,12 +75,17 @@ var ItemView = Backbone.View.extend({
   
   
   like : function() {
-    this.feedItem.set({"liked" : true});
+    $("#fb-like-spinner").show();
+    this.feedItem.like();
   },
   
   
   onLikeChanged : function() {
-    console.log(this.graphItem.id + "got liked!");
+    if(this.feedItem.isLiked() == true) {
+      console.log(this.graphItem.id + " got liked!");
+      $("#fb-like-spinner").hide();
+      $("#fb-like-ok").show();
+    }
   }
   
   

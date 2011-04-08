@@ -185,9 +185,9 @@
 	      </div>		  
 	      	    
         <div data-inline="true" style="text-align:right; float:right;">
-          <!--<img src="public/images/spinner-small-black.gif" id="fb-like-spinner" class="hidden">	  
-          <a id="unlike-button" href="javascript:void(0);" class="hidden" data-role="button" data-inline="true" data-icon="delete">Unlike</a>
-          <img src="public/images/ok.png" id="fb-like-ok" class="hidden">-->
+          <img src="public/images/spinner-small-black.gif" id="fb-like-spinner" class="hidden">	  
+          <!--<a id="unlike-button" href="javascript:void(0);" class="hidden" data-role="button" data-inline="true" data-icon="delete">Unlike</a>-->
+          <img src="public/images/ok.png" id="fb-like-ok" class="hidden">
 	        <a id="like-button" href="javascript:void(0);" data-role="button" data-inline="true" data-icon="star">Like</a>
         </div>
         <div data-inline="true" style="text-align:left; float:left;">
@@ -196,11 +196,6 @@
 	    </div>
 	    
 	    <script>
-        $('#fb-feed-item-page').live('pagehide', function(event, ui) {
-          $("#fb-feed-item-comments").hide();
-          return true;
-        });
-              
         $('#fb-feed-item-page').live('pagebeforeshow', function(event, ui) {
           if(fbAuth.needAuth() == true)
             $("#auth-url").attr("href", fbAuth.getAuthUrl()).show();
