@@ -1,8 +1,8 @@
 // Model
 var FeedItemModel = Backbone.Model.extend({
-  initialize : function(id, graph) {
-	  this.id = id;
-	  this.graph = graph;
+
+  initialize : function(id, graphItem) {
+	  this.graphItem = graphItem;
   },
 
   like : function() {
@@ -12,4 +12,5 @@ var FeedItemModel = Backbone.Model.extend({
   comment : function(message) {
 	  // comment on this feed item
   }
+
 });
