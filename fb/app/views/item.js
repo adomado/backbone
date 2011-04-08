@@ -1,6 +1,10 @@
 // View
 var ItemView = Backbone.View.extend({
 
+  events : {
+    "cick #like-button" : "like"
+  },
+  
   initialize : function(feedItemId) {
     this.feedItem = window.FeedList.get(feedItemId).get("graphItem");
     this.renderItemDetail();
@@ -28,6 +32,7 @@ var ItemView = Backbone.View.extend({
     $("#fb-feed-item-detail").html(ich.fbFeedItemDetail(feedItemData));  
     
     this.renderItemComments();
+    $("#fb-feed-item-detail").autolink();    
   },
   
   
@@ -59,6 +64,11 @@ var ItemView = Backbone.View.extend({
     
     commentHtml = ich.fbFeedItemComment(commentData);
     $(appendToId).append(commentHtml);
+  },
+  
+  
+  like : function() {
+    console.log("foo");
   }
   
 });
