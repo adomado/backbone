@@ -5,7 +5,9 @@ var ItemView = Backbone.View.extend({
     _.bindAll(this, "onLikeChanged"); // proxy the 'this' context back to the ItemView object
     this.feedItem = window.FeedList.get(feedItemId)
     this.graphItem = this.feedItem.get("graphItem");
-    this.feedItem.bind("change:liked", this.onLikeChanged);    
+    
+    this.feedItem.bind("change:liked", this.onLikeChanged); 
+       
     this.renderItemDetail();
     
     $('#fb-feed-item-page').live('pagehide', function(event, ui) {

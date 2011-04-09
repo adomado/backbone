@@ -14,7 +14,7 @@ var FBFeed = new JS.Class({
   
   
   feedReadyCallback : function(callingContext, feed, paging) {
-    //window.fbFeedRenderer = new FBFeedRenderer(feed, "#fb-feed");
+    console.log("BUGBUG - Generic feedReadyCallback called from FBFeed");
   },
   
   
