@@ -51,10 +51,10 @@
             <p style="text-align:right;">
               <small>
                 {{#likeCount}}
-                  {{likeCount}} Like{{#likePlural}}s{{/likePlural}} &nbsp; &nbsp; 
+                  {{likeCount}} {{likeText}} &nbsp; &nbsp; 
                 {{/likeCount}}
                 {{#commentCount}}
-                  {{commentCount}} Comment{{#commentPlural}}s{{/commentPlural}} &nbsp; &nbsp; 
+                  {{commentCount}} {{commentText}} &nbsp; &nbsp; 
                 {{/commentCount}}
                 
                 {{^likeCount}}
@@ -142,10 +142,10 @@
               <div style="text-align:right; float:right;">
                 <small>
                   {{#likeCount}}
-                    {{likeCount}} Like{{#likePlural}}s{{/likePlural}} &nbsp; &nbsp; 
+                    {{likeCount}} {{likeText}} &nbsp; &nbsp; 
                   {{/likeCount}}
                   {{#commentCount}}
-                    {{commentCount}} Comment{{#commentPlural}}s{{/commentPlural}} &nbsp; &nbsp; 
+                    {{commentCount}} {{commentText}} &nbsp; &nbsp; 
                   {{/commentCount}}            
                 </small>
               </div>

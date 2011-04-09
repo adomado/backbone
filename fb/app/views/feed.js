@@ -25,9 +25,9 @@ var FeedView = Backbone.View.extend({
       fromUserPic : "http://graph.facebook.com/" + feedItem.from.id + "/picture?type=small",
       description : feedItem.description || feedItem.caption,
       likeCount : feedItem.likes ? feedItem.likes.count : false,
-      likePlural : (feedItem.likes && feedItem.likes.count > 1) ? true : false,
+      likeText : (feedItem.likes && feedItem.likes.count > 1) ? "Likes" : "Like",
       commentCount : feedItem.comments ? feedItem.comments.count : false,
-      commentPlural : (feedItem.comments && feedItem.comments.count > 1) ? true : false,
+      commentText : (feedItem.comments && feedItem.comments.count > 1) ? "Comments" : "Comment",
       fromUserProfile : "http://www.facebook.com/profile.php?id=" + feedItem.from.id,
       itemId : feedItem.id
     };

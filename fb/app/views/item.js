@@ -3,11 +3,10 @@ var ItemView = Backbone.View.extend({
 
   initialize : function(feedItemId) {
     _.bindAll(this, "onLikeChanged"); // proxy the 'this' context back to the ItemView object
+    
     this.feedItem = window.FeedList.get(feedItemId)
     this.graphItem = this.feedItem.get("graphItem");
-    
-    this.feedItem.bind("change:liked", this.onLikeChanged); 
-       
+    this.feedItem.bind("change:liked", this.onLikeChanged);        
     this.renderItemDetail();
     
     $('#fb-feed-item-page').live('pagehide', function(event, ui) {
@@ -27,9 +26,9 @@ var ItemView = Backbone.View.extend({
       description : this.graphItem.description || this.graphItem.caption,
       picture : this.graphItem.picture || false,
       likeCount : this.graphItem.likes ? this.graphItem.likes.count : false,
-      likePlural : (this.graphItem.likes && this.graphItem.likes.count > 1) ? true : false,
+      likeText : (this.graphItem.likes && this.graphItem.likes.count > 1) ? "Likes" : "Like",
       commentCount : this.graphItem.comments ? this.graphItem.comments.count : false,
-      commentPlural : (this.graphItem.comments && this.graphItem.comments.count > 1) ? true : false,
+      commentText : (this.graphItem.comments && this.graphItem.comments.count > 1) ? "Comments" : "Comment",
       fromUserProfile : "http://www.facebook.com/profile.php?id=" + this.graphItem.from.id,
       permalink : this.graphItem.actions[0].link,
       itemId : this.graphItem.id,
@@ -84,7 +83,6 @@ var ItemView = Backbone.View.extend({
   
   onLikeChanged : function() {
     if(this.feedItem.isLiked() == true) {
-      console.log(this.graphItem.id + " got liked!");
       $("#fb-like-spinner").hide();
       $("#fb-like-ok").show();
     }

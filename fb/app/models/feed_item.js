@@ -21,9 +21,10 @@ var FeedItemModel = Backbone.Model.extend({
   
   
   isInitiallyLiked : function() {
-    if(this.get("graphItem").likes && this.get("graphItem").likes.data && this.get("graphItem").likes.data.length > 0)
-      for(var i=0; i<this.get("graphItem").likes.data.length; i++)
-        if(this.get("graphItem").likes.data[i].id == "593656556")
+    var graphItem = this.get("graphItem");
+    if(graphItem.likes && graphItem.likes.data && graphItem.likes.data.length > 0)
+      for(var i=0; i<graphItem.likes.data.length; i++)
+        if(graphItem.likes.data[i].id == "593656556")
           this.set({liked : true});
   }
   
