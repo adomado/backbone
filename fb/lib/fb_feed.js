@@ -14,7 +14,7 @@ var FBFeed = new JS.Class({
   
   
   feedReadyCallback : function(callingContext, feed, paging) {
-    //window.fbFeedRenderer = new FBFeedRenderer(feed, "#fb-feed");      
+    //window.fbFeedRenderer = new FBFeedRenderer(feed, "#fb-feed");
   },
   
   
@@ -32,7 +32,7 @@ var FBFeed = new JS.Class({
       success: function (jsonData) {
         this.feed = jsonData.data;
         this.paging = jsonData.paging
-        feedReadyCallback(this.callingContext, this.feed, this.paging);
+        feedReadyCallback(this.callingContext, jsonData.data, jsonData.paging);
       }
     });    
   },

@@ -1,10 +1,10 @@
 // Model
 var FeedItemModel = Backbone.Model.extend({
 
-  initialize : function(id, graphItem) {
-	  this.graphItem = graphItem;
-	  this.liked = false;
-	  this.isInitiallyLiked();
+  // attributes are magically consumed by the constructor
+  initialize : function(attributes) {
+	  this.set({"liked" : false});
+	  //this.isInitiallyLiked();
   },
   
   
@@ -13,6 +13,11 @@ var FeedItemModel = Backbone.Model.extend({
     new FBAction().like(this.graphItem.id, function(graphItemId) {
       console.log(graphItemId);
     });
+  },
+  
+  
+  _getGraphItem : function() {
+    return JSON.parse(this.get("graphItem"));
   },
   
   

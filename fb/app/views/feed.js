@@ -9,7 +9,7 @@ var FeedView = Backbone.View.extend({
 
 	  window.fbFeed = new FBFeed(this, undefined, function(_this, graphItems, graphPaging) { // _this is a proxy to 'this'
       for(var i=0; i<graphItems.length; i++)
-        _this.collection.create({id : graphItems[i].id, graphItem : graphItems[i]});
+        _this.collection.add({"id" : graphItems[i].id, "graphItem" : graphItems[i]});
         
       $("#fb-loading-top").hide();
       $("#fb-feed").show().listview("refresh");
@@ -18,8 +18,8 @@ var FeedView = Backbone.View.extend({
   
 
   // Renders the feed list, one item at a time
-  render : function(feedItem) {
-    feedItem = feedItem.get("graphItem"); // get the attribute from the model
+  render : function(model, collection) {
+    var feedItem = model.get("graphItem"); // get the attribute from the model
     var feedItemData = {
       title: feedItem.message || feedItem.name,
       fromUserPic : "http://graph.facebook.com/" + feedItem.from.id + "/picture?type=small",
