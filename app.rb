@@ -1,5 +1,6 @@
 require "rubygems"
 require 'sinatra'
+require "cgi"
 
 # To make post request
 require "json"

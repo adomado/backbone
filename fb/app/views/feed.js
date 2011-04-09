@@ -2,18 +2,29 @@
 var FeedView = Backbone.View.extend({
 
   initialize : function(feedItemsCollection) {
+    this.fbFeed = null;
     _.bindAll(this, "render");  // maintain context when this.render is bound as a callback
-    
     this.collection = feedItemsCollection;
 	  this.collection.bind("add", this.render);
 
-	  window.fbFeed = new FBFeed(this, undefined, function(_this, graphItems, graphPaging) { // _this is a proxy to 'this'
+    $("#more-feed").click(this.fetchMoreFeed);
+    this.fetchMoreFeed(); // Initial fetch
+  },
+
+
+  fetchMoreFeed : function() {
+    $("#fb-loading-bottom").show();
+    // undefined feedUrl would make the initial feed fetch
+    var feedUrl = (this.fbFeed == undefined) ? undefined : this.fbFeed.paging.next; 
+	  this.fbFeed = new FBFeed(this, feedUrl, function(_this, graphItems, graphPaging) { // _this is a proxy to 'this'
+console.log("BUGBUG - the _this context should be of FeedView class in the second run");    
       for(var i=0; i<graphItems.length; i++)
         _this.collection.add({"id" : graphItems[i].id, "graphItem" : graphItems[i]});
-        
+
+      $("#fb-loading-bottom").hide();        
       $("#fb-loading-top").hide();
       $("#fb-feed").show().listview("refresh");
-	  });
+	  });    
   },
   
 
