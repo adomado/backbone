@@ -85,7 +85,9 @@ var ItemView = Backbone.View.extend({
     if(this.feedItem.isLiked() == true) {
       $("#fb-like-spinner").hide();
       $("#fb-like-ok").show();
+      $("#item-likes").show();
     }
+    $("#like-count").html(this.feedItem.get("likeCount"));
   }
   
   
