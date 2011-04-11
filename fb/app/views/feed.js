@@ -3,9 +3,10 @@ var FeedView = Backbone.View.extend({
 
   initialize : function(feedItemsCollection) {
     this.fbFeed = null;
-    _.bindAll(this, "render");  // maintain context when this.render is bound as a callback
+    _.bindAll(this, "render", "renderLikeForItem");  // maintain context when this.render is bound as a callback
     this.collection = feedItemsCollection;
 	  this.collection.bind("add", this.render);
+	  this.collection.bind("change:liked", this.renderLikeForItem);    
   
     $("#more-feed").click(jQuery.proxy(this.fetchMoreFeed, this));  // save the 'this' calling context
     this.fetchMoreFeed(); // Initial fetch
@@ -14,11 +15,11 @@ var FeedView = Backbone.View.extend({
 
   fetchMoreFeed : function() {
     if(this.fbFeed == null)
-  	  this.fbFeed = new FBFeed(this, undefined, this.feedReadyCallback);
+  	  this.fbFeed = new FBFeed(this, undefined, this.feedReadyCallback);  // save the 'this' calling context
   	else
   	{
       $("#fb-loading-bottom").show();
-  	  this.fbFeed.getMoreFeed();
+  	  this.fbFeed.getMoreFeed();  // uses callback passed to fbFeed's constructor
 	  }
   },
   
@@ -50,6 +51,16 @@ var FeedView = Backbone.View.extend({
     
 	  $("#fb-feed").append(ich.fbFeedItem(feedItemData));
 	  return this;
+  },
+  
+  
+  renderLikeForItem : function(model, collection) {
+    var likeCount = model.get("likeCount");
+    if(likeCount > 0)
+    {
+      $("#" + model.id + "__like-count-infeed").html(likeCount);
+      $("#" + model.id + "__item-likes-infeed").show();
+    }
   }
   
 });
