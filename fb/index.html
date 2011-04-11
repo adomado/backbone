@@ -49,10 +49,13 @@
               {{description}}
             </p>
             <p style="text-align:right;">
+              <span id="{{itemId}}__item-likes-infeed" style="{{^likeCount}}display:none;{{/likeCount}}">
+                <span id="{{itemId}}__like-count-infeed">{{likeCount}}</span> {{likeText}} &nbsp; &nbsp; 
+              </span>            
               <small>
-                {{#likeCount}}
+                <!--{{#likeCount}}
                   {{likeCount}} {{likeText}} &nbsp; &nbsp; 
-                {{/likeCount}}
+                {{/likeCount}}-->
                 {{#commentCount}}
                   {{commentCount}} {{commentText}} &nbsp; &nbsp; 
                 {{/commentCount}}

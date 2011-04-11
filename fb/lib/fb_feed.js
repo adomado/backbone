@@ -3,17 +3,18 @@ var FBFeed = new JS.Class({
   include : Storage,
 
   initialize: function(callingContext, feedUrl, feedReadyCallback) {
+    this.feedReadyCallback = feedReadyCallback;
     this.callingContext = callingContext;
     this.getFeed(feedUrl, feedReadyCallback);
   },
   
   
-  getMore : function() {
-    window.fbFeed = new FBFeed(this.paging.next)
+  getMoreFeed : function() {
+    this.getFeed(this.paging.next, this.feedReadyCallback);
   },
   
   
-  feedReadyCallback : function(callingContext, feed, paging) {
+  feedReadyCallbackGeneric : function(callingContext, feed, paging) {
     console.log("BUGBUG - Generic feedReadyCallback called from FBFeed");
   },
   
@@ -23,7 +24,7 @@ var FBFeed = new JS.Class({
       feedUrl = 'https://graph.facebook.com/me/home?access_token=' + this.getItem("fbAccessToken");
       
     if(feedReadyCallback == undefined)
-      feedReadyCallback = this.feedReadyCallback;
+      feedReadyCallback = this.feedReadyCallbackGeneric;
       
     $.ajax({
       dataType: 'jsonp',

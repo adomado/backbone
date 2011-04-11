@@ -13,17 +13,23 @@ var FeedView = Backbone.View.extend({
 
 
   fetchMoreFeed : function() {
-    $("#fb-loading-bottom").show();
-    // undefined feedUrl would make the initial feed fetch
-    var feedUrl = (this.fbFeed == undefined) ? undefined : this.fbFeed.paging.next; 
-	  this.fbFeed = new FBFeed(this, feedUrl, function(_this, graphItems, graphPaging) { // _this is a proxy to 'this'
-      for(var i=0; i<graphItems.length; i++)
-        _this.collection.add({"id" : graphItems[i].id, "graphItem" : graphItems[i]});
+    if(this.fbFeed == null)
+  	  this.fbFeed = new FBFeed(this, undefined, this.feedReadyCallback);
+  	else
+  	{
+      $("#fb-loading-bottom").show();
+  	  this.fbFeed.getMoreFeed();
+	  }
+  },
+  
+  
+  feedReadyCallback : function(_this, graphItems, graphPaging) { // _this is a proxy to 'this' of FeedView.js
+    for(var i=0; i<graphItems.length; i++)
+      _this.collection.add({"id" : graphItems[i].id, "graphItem" : graphItems[i]});
 
-      $("#fb-loading-bottom").hide();        
-      $("#fb-loading-top").hide();
-      $("#fb-feed").show().listview("refresh");
-	  });    
+    $("#fb-loading-bottom").hide();        
+    $("#fb-loading-top").hide();
+    $("#fb-feed").show().listview("refresh");
   },
   
 

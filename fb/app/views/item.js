@@ -4,6 +4,7 @@ var ItemView = Backbone.View.extend({
   initialize : function(feedItemId) {
     _.bindAll(this, "onLikeChanged"); // proxy the 'this' context back to the ItemView object
     
+    this.feedItemId = feedItemId;
     this.feedItem = window.FeedList.get(feedItemId)
     this.graphItem = this.feedItem.get("graphItem");
     this.feedItem.bind("change:liked", this.onLikeChanged);        
