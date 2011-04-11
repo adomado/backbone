@@ -29,11 +29,11 @@ var FBFeed = new JS.Class({
       dataType: 'jsonp',
       context : this,
       url: feedUrl,
-      success: function (jsonData) {
-        this.feed = jsonData.data;
-        this.paging = jsonData.paging
-        feedReadyCallback(this.callingContext, jsonData.data, jsonData.paging);
-      }
+      success : jQuery.proxy(function (jsonData) {  // save the 'this' calling context
+          this.feed = jsonData.data;
+          this.paging = jsonData.paging
+          feedReadyCallback(this.callingContext, jsonData.data, jsonData.paging);
+        }, this)
     });    
   },
   
