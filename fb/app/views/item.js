@@ -79,6 +79,7 @@ var ItemView = Backbone.View.extend({
   like : function() {
     $("#fb-like-spinner").show();
     this.feedItem.like();
+    //window.appApi.requestNotification({text : "Liked - " + this.graphItem.message || this.graphItem.name, url : this.graphItem.link});
   },
   
   

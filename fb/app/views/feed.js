@@ -30,7 +30,8 @@ var FeedView = Backbone.View.extend({
 
     $("#fb-loading-bottom").hide();        
     $("#fb-loading-top").hide();
-    $("#fb-feed").show().listview("refresh");
+    $("#fb-feed").show();
+    $("#fb-feed").listview("refresh");
   },
   
 
