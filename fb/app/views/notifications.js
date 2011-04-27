@@ -8,7 +8,12 @@ var NotificationView = Backbone.View.extend({
 
   render : function(model, collection) {
     var notificationData = model.get("data");
-    window.appApi.requestNotification({text : notificationData.title_text, title : "Notification", url : notificationData.href});
+    window.appApi.requestNotification({
+      text : notificationData["title_text"],
+      title : "Facebook Notification",
+      image : "http://graph.facebook.com/" + notificationData["sender_id"] + "/picture?type=small",
+      url : notificationData.href
+    });
   }  
   
 });

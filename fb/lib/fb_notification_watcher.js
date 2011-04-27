@@ -2,19 +2,21 @@ var FBNotificationWatcher = new JS.Class({
 
   include : Storage,
 
-  initialize : function(options) {
-    this.timeout = options.timeout || (5 * 1000); // default is 5 sec
+  // Accepts timeout in minutes. Default is 1 minute
+  initialize : function(timeout) {
+    this.timeout = (timeout || 1) * 60 * 1000; // stores in millisec
+    this.getNotifications(); // initiate the first fetch
   },
 
 
-  get : function(callback) {
+  getNotifications : function() {
     var url = "https://api.facebook.com/method/notifications.GetList?access_token=" + this.getItem("fbAccessToken") + "&format=json";
     
     $.ajax({
       dataType: 'jsonp',
       context : this,
       url: url,
-      success : jQuery.proxy(function (jsonData) {  // save the 'this' calling context
+      success : jQuery.proxy(function(jsonData) {  // save the 'this' calling context
           this.processNotifications(jsonData);
         }, this)
     });
@@ -30,6 +32,8 @@ var FBNotificationWatcher = new JS.Class({
         }
       }
     }
+
+    setTimeout(jQuery.proxy(this.getNotifications, this), this.timeout); // setTimeout needs to remain in callback so that we don't fire another timer while callback is executing.
   }
   
   
