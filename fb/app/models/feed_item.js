@@ -29,7 +29,7 @@ var FeedItemModel = Backbone.Model.extend({
       
       if(graphItem.likes.data && graphItem.likes.data.length > 0)
         for(var i=0; i<graphItem.likes.data.length; i++)
-          if(graphItem.likes.data[i].id == "593656556")
+          if(graphItem.likes.data[i].id == window.fbMe.id)
             this.set({liked : true});
     }
     else

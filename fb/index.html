@@ -21,11 +21,12 @@
     <script src="/lib/fb_feed.js?cb=1"></script> 
     <script src="/lib/fb_action.js"></script>
     <script src="/lib/fb_notification_watcher.js"></script>
+    <script src="/lib/fb_me.js?cb=1"></script>
     <script src="/app/models/notification_item.js"></script>
     <script src="/app/models/feed_item.js?cb=1"></script>
     <script src="/app/collections/feed_list.js"></script>
     <script src="/app/collections/notification_list.js"></script>
-    <script src="/app/views/feed.js?cb=211"></script>
+    <script src="/app/views/feed.js?cb=21"></script>
     <script src="/app/views/item.js"></script>
     <script src="/app/views/notifications.js"></script>
     <script src="/public/js/icanhaz/ICanHaz.min.js"></script>
@@ -33,7 +34,7 @@
   	<script src="/public/js/jquery-mobile/jquery.mobile-1.0a4.1.min.js"></script>
 
 	  <script>
-	    var FeedList, FeedApp, fbAuth, fbFeed, appApi, CurrentFeedItem, NotificationList, Notifications, fbNotificationWatcher;
+	    var FeedList, FeedApp, fbAuth, fbFeed, fbMe, appApi, CurrentFeedItem, NotificationList, Notifications, fbNotificationWatcher;
       fbAuth = new FBAuth("21577534106", document.location.href, function() { console.log("TODO - auth reinforce needed"); });
 
 	    $(document).ready(function() {

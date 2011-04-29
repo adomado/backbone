@@ -9,8 +9,16 @@ var FeedView = Backbone.View.extend({
 	  this.collection.bind("change:liked", this.renderLikeForItem);    
   
     $("#more-feed").click(jQuery.proxy(this.fetchOlderFeed, this));  // save the 'this' calling context
-    this.fbFeed = new FBFeed(this, undefined, this.feedReadyCallbackPrepend, this.feedReadyCallbackAppend);  // Initial fetch
-    this.fetchNewerFeed();  // continuesly loop to check for any newer feeds
+    this.initMeAndFeed();
+  },
+
+
+  // Initializes window.fbMe & fetches feeds...
+  initMeAndFeed : function() {
+    new FBMe(this, function(_this, jsonDataMe) {
+      _this.fbFeed = new FBFeed(_this, undefined, _this.feedReadyCallbackPrepend, _this.feedReadyCallbackAppend);  // Initial fetch
+      _this.fetchNewerFeed();  // continuesly loop to check for any newer feeds
+    })
   },
 
 
