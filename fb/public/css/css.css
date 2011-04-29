@@ -12,16 +12,32 @@ a {
 
 #fb-loading-bottom {
   position: relative;
-  top: 3px;
+  top: -7px;
+  right: -3px;
 }
 
 #fb-like-spinner {
   position: relative;
-  top: 4px;
+  top: -4px;
 }
 
 .hidden {
   display: none;
-  position: relative;
-  top: 9px;
 }
+
+
+@media screen and (-webkit-min-device-pixel-ratio:0){
+  #fb-like-spinner {
+    position: relative;
+    top: 4px;
+  }
+
+  .hidden {
+    position: relative;
+    top: 9px;    
+  }
+
+  #fb-loading-bottom {
+    top: 3px;
+  }  
+} 
