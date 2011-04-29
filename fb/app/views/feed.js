@@ -8,27 +8,48 @@ var FeedView = Backbone.View.extend({
 	  this.collection.bind("add", this.render);
 	  this.collection.bind("change:liked", this.renderLikeForItem);    
   
-    $("#more-feed").click(jQuery.proxy(this.fetchMoreFeed, this));  // save the 'this' calling context
-    this.fetchMoreFeed(); // Initial fetch
+    $("#more-feed").click(jQuery.proxy(this.fetchOlderFeed, this));  // save the 'this' calling context
+    this.fbFeed = new FBFeed(this, undefined, this.feedReadyCallbackPrepend, this.feedReadyCallbackAppend);  // Initial fetch
+    this.fetchNewerFeed();  // continuesly loop to check for any newer feeds
   },
 
 
-  fetchMoreFeed : function() {
-    if(this.fbFeed == null)
-  	  this.fbFeed = new FBFeed(this, undefined, this.feedReadyCallback);  // save the 'this' calling context
-  	else
-  	{
-      $("#fb-loading-bottom").show();
-  	  this.fbFeed.getMoreFeed();  // uses callback passed to fbFeed's constructor
-	  }
+  // Keeps looping every N minutes...
+  fetchNewerFeed : function() {
+    this.fbFeed.getNewerFeed();
+    var timeout = 0.5 * 60 * 1000;
+    setTimeout(jQuery.proxy(this.fetchNewerFeed, this), timeout);
+  },
+
+
+  fetchOlderFeed : function() {
+    $("#fb-loading-bottom").show();
+    this.fbFeed.getOlderFeed();  // uses callback passed to fbFeed's constructor
   },
   
   
-  feedReadyCallback : function(_this, graphItems, graphPaging) { // _this is a proxy to 'this' of FeedView.js
-    for(var i=0; i<graphItems.length; i++)
-      _this.collection.add({"id" : graphItems[i].id, "graphItem" : graphItems[i]});
+  feedReadyCallbackAppend : function(_this, graphItems, graphPaging) { // _this is a proxy to 'this' of FeedView.js
+    _this.addItemsToList(graphItems, "append");
+    _this.refreshUiAfterCallback();    
+  },
 
-    $("#fb-loading-bottom").hide();        
+
+  feedReadyCallbackPrepend : function(_this, graphItems, graphPaging) { // _this is a proxy to 'this' of FeedView.js
+    _this.addItemsToList(graphItems, "prepend");
+    $("#fb-feed").listview("refresh");
+  },
+  
+
+  addItemsToList : function(graphItems, direction) {
+    for(var i=0; i<graphItems.length; i++) {
+      if(! this.collection.get(graphItems[i].id))  // don't add to FeedList collection if the graphItem already exists in it.. (or it will duplicate content on UI)
+        this.collection.add({"id" : graphItems[i].id, "graphItem" : graphItems[i], "direction" : direction});
+    }
+  },
+  
+  
+  refreshUiAfterCallback : function() {
+    $("#fb-loading-bottom").hide();
     $("#fb-loading-top").hide();
     $("#fb-feed").show();
     $("#fb-feed").listview("refresh");
@@ -49,8 +70,11 @@ var FeedView = Backbone.View.extend({
       fromUserProfile : "http://www.facebook.com/profile.php?id=" + feedItem.from.id,
       itemId : feedItem.id
     };
-    
-	  $("#fb-feed").append(ich.fbFeedItem(feedItemData));
+
+    if(model.get("direction") == "append")
+      $("#fb-feed").append(ich.fbFeedItem(feedItemData));
+    else
+      $("#fb-feed").prepend(ich.fbFeedItem(feedItemData));
 	  return this;
   },
   

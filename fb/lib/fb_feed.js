@@ -2,15 +2,21 @@ var FBFeed = new JS.Class({
 
   include : Storage,
 
-  initialize: function(callingContext, feedUrl, feedReadyCallback) {
-    this.feedReadyCallback = feedReadyCallback;
+  initialize: function(callingContext, feedUrl, feedReadyCallbackPrepend, feedReadyCallbackAppend) {
+    this.feedReadyCallbackPrepend = feedReadyCallbackPrepend;
+    this.feedReadyCallbackAppend = feedReadyCallbackAppend;
     this.callingContext = callingContext;
-    this.getFeed(feedUrl, feedReadyCallback);
+    this.getFeed(feedUrl, this.feedReadyCallbackAppend); // Initiate the first feed fetch
+  },
+
+
+  getNewerFeed : function() {
+    this.getFeed(undefined, this.feedReadyCallbackPrepend);
   },
   
   
-  getMoreFeed : function() {
-    this.getFeed(this.paging.next, this.feedReadyCallback);
+  getOlderFeed : function() {
+    this.getFeed(this.paging.next, this.feedReadyCallbackAppend);
   },
   
   
@@ -18,7 +24,7 @@ var FBFeed = new JS.Class({
     console.log("BUGBUG - Generic feedReadyCallback called from FBFeed");
   },
   
-  
+
   getFeed : function(feedUrl, feedReadyCallback) {
     if(feedUrl == undefined)
       feedUrl = 'https://graph.facebook.com/me/home?access_token=' + this.getItem("fbAccessToken");
@@ -33,7 +39,7 @@ var FBFeed = new JS.Class({
       success : jQuery.proxy(function (jsonData) {  // save the 'this' calling context
           this.feed = jsonData.data;
           this.paging = jsonData.paging
-          feedReadyCallback(this.callingContext, jsonData.data, jsonData.paging);
+          feedReadyCallback(this.callingContext, jsonData.data, jsonData.paging); // direction tells to append or prepend in view list
         }, this)
     });    
   },

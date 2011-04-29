@@ -18,14 +18,14 @@
     <script src="/public/js/backbone/backbone-localstorage.js"></script>
     <script src="/lib/fb_storage.js"></script> 
     <script src="/lib/fb_auth.js"></script> 
-    <script src="/lib/fb_feed.js"></script> 
+    <script src="/lib/fb_feed.js?cb=1"></script> 
     <script src="/lib/fb_action.js"></script>
     <script src="/lib/fb_notification_watcher.js"></script>
     <script src="/app/models/notification_item.js"></script>
-    <script src="/app/models/feed_item.js"></script>
+    <script src="/app/models/feed_item.js?cb=1"></script>
     <script src="/app/collections/feed_list.js"></script>
     <script src="/app/collections/notification_list.js"></script>
-    <script src="/app/views/feed.js"></script>
+    <script src="/app/views/feed.js?cb=211"></script>
     <script src="/app/views/item.js"></script>
     <script src="/app/views/notifications.js"></script>
     <script src="/public/js/icanhaz/ICanHaz.min.js"></script>
@@ -41,7 +41,7 @@
         FeedApp = new FeedView(FeedList);
         NotificationList = new NotificationListCollection;
         Notifications = new NotificationView(NotificationList);
-        fbNotificationWatcher = new FBNotificationWatcher(0.001);
+        fbNotificationWatcher = new FBNotificationWatcher(1);
       });
 	  </script>
   	
