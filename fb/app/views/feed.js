@@ -71,6 +71,7 @@ var FeedView = Backbone.View.extend({
       title: feedItem.message || feedItem.name,
       fromUserPic : "http://graph.facebook.com/" + feedItem.from.id + "/picture?type=small",
       description : feedItem.description || feedItem.caption,
+      picture : feedItem.picture || false,
       likeCount : feedItem.likes ? feedItem.likes.count : false,
       likeText : (feedItem.likes && feedItem.likes.count > 1) ? "Likes" : "Like",
       commentCount : feedItem.comments ? feedItem.comments.count : false,
