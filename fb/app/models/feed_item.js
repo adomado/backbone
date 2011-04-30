@@ -47,11 +47,10 @@ var FeedItemModel = Backbone.Model.extend({
   
   // Just change the commentCount to trigger refresh of this item
   addComment : function() {
-    var newCount = this.get("commentCount") + 1;
-    this.set({"commentCount" : newCount});
-
     // Initate a feedItem refetch...
     FeedApp.fbFeed.reFetchItem(this.id, this, function(_this, jsonData) {
+      var newCount = _this.get("commentCount") + 1;
+      _this.set({"commentCount" : newCount});
       _this.set({graphItem : jsonData});
     });
   }

@@ -23,11 +23,11 @@
     <script src="/lib/fb_notification_watcher.js"></script>
     <script src="/lib/fb_me.js?cb=1"></script>
     <script src="/app/models/notification_item.js"></script>
-    <script src="/app/models/feed_item.js?cb=1"></script>
+    <script src="/app/models/feed_item.js?cb=11"></script>
     <script src="/app/collections/feed_list.js"></script>
     <script src="/app/collections/notification_list.js"></script>
     <script src="/app/views/feed.js?cb=21"></script>
-    <script src="/app/views/item.js?cb=21"></script>
+    <script src="/app/views/item.js?cb=2"></script>
     <script src="/app/views/notifications.js"></script>
     <script src="/public/js/icanhaz/ICanHaz.min.js"></script>
     <script src="/public/js/autolink/jquery.autolink.js"></script>
@@ -198,7 +198,10 @@
 	        <h4>Comments</h4>
           <div style="text-align:center;" data-inline="true">
             <input type="text" name="fb-item-new-comment" id="fb-item-new-comment" value="" style="margin-bottom:5px;" />
-            <small><a id="fb-item-new-comment-button" href="javascript:void(0);" data-role="button" data-inline="true" data-icon="grid">Comment</a></small>
+            <small>
+              <a id="fb-item-new-comment-button" href="javascript:void(0);" data-role="button" data-inline="true" data-icon="grid">Comment</a>
+              <img src="public/images/spinner-small-black.gif" id="fb-comment-spinner" class="hidden">
+            </small>
           </div>
 	        <div id="comments"></div>
           <a href="#" style="display:none;" id="more-comments"><small>All comments<small></a>	      

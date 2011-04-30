@@ -100,12 +100,15 @@ var ItemView = Backbone.View.extend({
 
 
   newComment : function() {
+    $("#fb-comment-spinner").show();
     this.feedItem.addComment()
   },
 
   onCommentCountChanged : function() {
     $("#item-comments").show();
+    this.renderItemComments();
     $("#comment-count").html(this.feedItem.get("commentCount"));
+    $("#fb-comment-spinner").hide();
   }
   
 });

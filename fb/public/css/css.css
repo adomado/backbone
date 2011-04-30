@@ -37,6 +37,11 @@ a {
     top: 4px;
   }
 
+  #fb-comment-spinner {
+    position: relative;
+    top: 4px;
+  }
+
   .hidden {
     position: relative;
     top: 9px;    
