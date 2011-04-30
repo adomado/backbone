@@ -2,17 +2,21 @@
 var ItemView = Backbone.View.extend({
 
   initialize : function(feedItemId) {
-    _.bindAll(this, "onLikeChanged"); // proxy the 'this' context back to the ItemView object
+    _.bindAll(this, "onLikeChanged", "onCommentCountChanged"); // proxy the 'this' context back to the ItemView object
     
     this.feedItemId = feedItemId;
     this.feedItem = window.FeedList.get(feedItemId)
     this.graphItem = this.feedItem.get("graphItem");
-    this.feedItem.bind("change:liked", this.onLikeChanged);        
+    
+    this.feedItem.bind("change:liked", this.onLikeChanged);
+    this.feedItem.bind("change:commentCount", this.onCommentCountChanged);
+
     this.renderItemDetail();
     
     $('#fb-feed-item-page').live('pagehide', function(event, ui) {
       $("#fb-feed-item-comments").hide();
       $("#like-button").die("click"); // so that we saftely disconnect from a previously viewed feedItem
+      $("#fb-item-new-comment-button").die("click");
       return true;
     });    
   },
@@ -20,16 +24,18 @@ var ItemView = Backbone.View.extend({
   
   renderItemDetail : function() {
     // this should point to the item clicked
+    var likeCount = this.feedItem.get("likeCount");
+    var commentCount = this.feedItem.get("commentCount");
     var feedItemData = {
       title: this.graphItem.message || this.graphItem.name,
       fromUserPic : "http://graph.facebook.com/" + this.graphItem.from.id + "/picture?type=normal",
       fromUserName : this.graphItem.from.name,      
       description : this.graphItem.description || this.graphItem.caption,
       picture : this.graphItem.picture || false,
-      likeCount : this.graphItem.likes ? this.graphItem.likes.count : false,
-      likeText : (this.graphItem.likes && this.graphItem.likes.count > 1) ? "Likes" : "Like",
-      commentCount : this.graphItem.comments ? this.graphItem.comments.count : false,
-      commentText : (this.graphItem.comments && this.graphItem.comments.count > 1) ? "Comments" : "Comment",
+      likeCount : likeCount ? likeCount : false,
+      likeText : (likeCount > 1) ? "Likes" : "Like",
+      commentCount : commentCount ? commentCount : false,
+      commentText : (commentCount > 1) ? "Comments" : "Comment",
       fromUserProfile : "http://www.facebook.com/profile.php?id=" + this.graphItem.from.id,
       permalink : this.graphItem.actions[0].link,
       itemId : this.graphItem.id,
@@ -41,10 +47,11 @@ var ItemView = Backbone.View.extend({
     $("#fb-feed-item-detail").autolink();
     
     $("#like-button").live("click", jQuery.proxy(this.like, this));  // proxy saves the 'this' context
+    $("#fb-item-new-comment-button").live("click", jQuery.proxy(this.newComment, this));  // proxy saves the 'this' context
   },
   
   
-  renderItemComments : function(appendToId) {
+  renderItemComments : function() {
     var appendToId = "#comments";
     $(appendToId).html(""); // cleanup
     
@@ -56,9 +63,9 @@ var ItemView = Backbone.View.extend({
         
       if(this.graphItem.comments.count > this.graphItem.comments.data.length)
         $("#more-comments").attr("href", this.graphItem.actions[0].link).show();      
-        
-      $("#fb-feed-item-comments").show();
     }
+    
+    $("#fb-feed-item-comments").show(); // show anyways (so that user can add a new comment)
     this.feedItem.isLiked() == true ? $("#fb-like-ok").show() : $("#fb-like-ok").hide();    
   },
   
@@ -79,7 +86,6 @@ var ItemView = Backbone.View.extend({
   like : function() {
     $("#fb-like-spinner").show();
     this.feedItem.like();
-    //window.appApi.requestNotification({text : "Liked - " + this.graphItem.message || this.graphItem.name, url : this.graphItem.link});
   },
   
   
@@ -90,7 +96,16 @@ var ItemView = Backbone.View.extend({
       $("#item-likes").show();
     }
     $("#like-count").html(this.feedItem.get("likeCount"));
+  },
+
+
+  newComment : function() {
+    this.feedItem.addComment()
+  },
+
+  onCommentCountChanged : function() {
+    $("#item-comments").show();
+    $("#comment-count").html(this.feedItem.get("commentCount"));
   }
-  
   
 });

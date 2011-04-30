@@ -3,10 +3,11 @@ var FeedView = Backbone.View.extend({
 
   initialize : function(feedItemsCollection) {
     this.fbFeed = null;
-    _.bindAll(this, "render", "renderLikeForItem");  // maintain context when this.render is bound as a callback
+    _.bindAll(this, "render", "renderLikeCount", "renderCommentCount");  // maintain context when this.render is bound as a callback
     this.collection = feedItemsCollection;
 	  this.collection.bind("add", this.render);
-	  this.collection.bind("change:liked", this.renderLikeForItem);    
+    this.collection.bind("change:liked", this.renderLikeCount);
+    this.collection.bind("change:commentCount", this.renderCommentCount);
   
     $("#more-feed").click(jQuery.proxy(this.fetchOlderFeed, this));  // save the 'this' calling context
     this.initMeAndFeed();
@@ -88,13 +89,23 @@ var FeedView = Backbone.View.extend({
   },
   
   
-  renderLikeForItem : function(model, collection) {
+  renderLikeCount : function(model, collection) {
     var likeCount = model.get("likeCount");
     if(likeCount > 0)
     {
       $("#" + model.id + "__like-count-infeed").html(likeCount);
       $("#" + model.id + "__item-likes-infeed").show();
     }
+  },
+
+
+  renderCommentCount : function(model, collection) {
+    var commentCount = model.get("commentCount");
+    if(commentCount > 0)
+    {
+      $("#" + model.id + "__comment-count-infeed").html(commentCount);
+      $("#" + model.id + "__item-comments-infeed").show();
+    }    
   }
   
 });

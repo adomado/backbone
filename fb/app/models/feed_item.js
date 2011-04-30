@@ -3,8 +3,9 @@ var FeedItemModel = Backbone.Model.extend({
 
   // attributes are magically consumed by the constructor
   initialize : function(attributes) {
-	  this.set({liked : false, likeCount : 0});
+	  this.set({liked : false, likeCount : 0, commentCount : 0});
 	  this.initLikes();
+    this.initComments();
   },
   
   
@@ -34,6 +35,25 @@ var FeedItemModel = Backbone.Model.extend({
     }
     else
       this.set({likeCount : 0});
+  },
+
+
+  initComments : function() {
+    var graphItem = this.get("graphItem");
+    if(graphItem.comments && graphItem.comments.count)
+      this.set({"commentCount" : graphItem.comments.count});
+  },
+
+  
+  // Just change the commentCount to trigger refresh of this item
+  addComment : function() {
+    var newCount = this.get("commentCount") + 1;
+    this.set({"commentCount" : newCount});
+
+    // Initate a feedItem refetch...
+    FeedApp.fbFeed.reFetchItem(this.id, this, function(_this, jsonData) {
+      _this.set({graphItem : jsonData});
+    });
   }
   
 });

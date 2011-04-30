@@ -44,10 +44,20 @@ var FBFeed = new JS.Class({
     });    
   },
   
-  
-  refreshFeed : function() {
-    document.location.href = document.location.origin + document.location.pathname;
+
+
+  // refresh a particular feedItem
+  reFetchItem : function(itemId, callingContext, callback) {
+    $.ajax({
+      dataType: 'jsonp',
+      context : this,
+      url: "https://graph.facebook.com/" + itemId + "?access_token=" + this.getItem("fbAccessToken"),
+      success : jQuery.proxy(function (jsonData) {  // save the 'this' calling context
+          callback(callingContext, jsonData); // direction tells to append or prepend in view list
+        }, this)
+    });
   }
-    
+
+
 });
 
