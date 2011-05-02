@@ -1,5 +1,5 @@
 .fb-feed-item {
-  padding-right: 35px !important;
+  padding-right: 40px !important;
 }
 
 .comment-text {
@@ -49,6 +49,10 @@ a {
   position: relative;
 }
 
+.infeed-likes-comments {
+  text-align: right;
+}
+
 
 /* Firefox only css */
 @-moz-document url-prefix() {
@@ -60,6 +64,10 @@ a {
   #fb-comment-spinner {
     top: -9px;
   }
+
+  .infeed-likes-comments {
+    margin-top: 2px;
+  }  
 }
 
 
