@@ -12,13 +12,8 @@ var ItemView = Backbone.View.extend({
     this.feedItem.bind("change:commentCount", this.onCommentCountChanged);
 
     this.renderItemDetail();
-    
-    $('#fb-feed-item-page').live('pagehide', function(event, ui) {
-      $("#fb-feed-item-comments").hide();
-      $("#like-button").die("click"); // so that we saftely disconnect from a previously viewed feedItem
-      $("#fb-item-new-comment-button").die("click");
-      return true;
-    });    
+
+    this.detachCallbacksOnPageHide();
   },
   
   
@@ -37,7 +32,7 @@ var ItemView = Backbone.View.extend({
       commentCount : commentCount ? commentCount : false,
       commentText : (commentCount > 1) ? "Comments" : "Comment",
       fromUserProfile : "http://www.facebook.com/profile.php?id=" + this.graphItem.from.id,
-      permalink : this.graphItem.actions[0].link,
+      permalink : this.graphItem.actions ? this.graphItem.actions[0].link : ("http://www.facebook.com/" + this.graphItem.from.id + "/posts/" + this.graphItem.id),
       itemId : this.graphItem.id,
       linkTo : this.graphItem.link
     };    
@@ -111,6 +106,17 @@ var ItemView = Backbone.View.extend({
     $("#comment-count").html(this.feedItem.get("commentCount"));
     $("#fb-comment-spinner").hide();
     $("#fb-item-new-comment").val("");
+  },
+  
+
+  // Makes jQuery detach callbacks when the item details page is hidden
+  detachCallbacksOnPageHide : function() {
+    $('#fb-feed-item-page').live('pagehide', function(event, ui) {
+      $("#fb-feed-item-comments").hide();
+      $("#like-button").die("click"); // so that we saftely disconnect from a previously viewed feedItem
+      $("#fb-item-new-comment-button").die("click");
+      return true;
+    });      
   }
   
 });

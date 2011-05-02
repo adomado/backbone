@@ -25,6 +25,7 @@ var FeedView = Backbone.View.extend({
 
   // Keeps looping every N minutes...
   fetchNewerFeed : function() {
+    this.waitForData();
     this.fbFeed.getNewerFeed();
     var timeout = 0.5 * 60 * 1000;
     setTimeout(jQuery.proxy(this.fetchNewerFeed, this), timeout);
@@ -39,13 +40,15 @@ var FeedView = Backbone.View.extend({
   
   feedReadyCallbackAppend : function(_this, graphItems, graphPaging) { // _this is a proxy to 'this' of FeedView.js
     _this.addItemsToList(graphItems, "append");
-    _this.refreshUiAfterCallback();    
+    _this.refreshUiAfterCallback();
+    _this.stopWaitForData();
   },
 
 
   feedReadyCallbackPrepend : function(_this, graphItems, graphPaging) { // _this is a proxy to 'this' of FeedView.js
     _this.addItemsToList(graphItems, "prepend");
     $("#fb-feed").listview("refresh");
+    _this.stopWaitForData();
   },
   
 
@@ -127,6 +130,16 @@ var FeedView = Backbone.View.extend({
         this.collection.get(graphItem.id).refresh();
       }
     }
+  },
+
+
+  waitForData : function() {
+    $("#wall-load-spinner").css({display : "inline"});
+  },
+
+
+  stopWaitForData : function() {
+    $("#wall-load-spinner").hide();
   }
   
 });

@@ -29,12 +29,13 @@
     <script src="/app/views/feed.js?cb=21"></script>
     <script src="/app/views/item.js?cb=2"></script>
     <script src="/app/views/notifications.js"></script>
+    <script src="/app/views/share.js"></script>
     <script src="/public/js/icanhaz/ICanHaz.min.js"></script>
     <script src="/public/js/autolink/jquery.autolink.js"></script>
   	<script src="/public/js/jquery-mobile/jquery.mobile-1.0a4.1.min.js"></script>
 
 	  <script>
-	    var FeedList, FeedApp, fbAuth, fbFeed, fbMe, appApi, CurrentFeedItem, NotificationList, Notifications, fbNotificationWatcher;
+	    var FeedList, FeedApp, fbAuth, fbFeed, fbMe, appApi, CurrentFeedItem, NotificationList, Notifications, fbNotificationWatcher, FeedShare;
       fbAuth = new FBAuth("21577534106", document.location.href, function() { console.log("TODO - auth reinforce needed"); });
 
 	    $(document).ready(function() {
@@ -43,7 +44,17 @@
         NotificationList = new NotificationListCollection;
         Notifications = new NotificationView(NotificationList);
         fbNotificationWatcher = new FBNotificationWatcher(0.5); // every 30 seconds
+        FeedShare = new ShareView();
       });
+
+
+      // Show the auth page if user is not connected with FB
+      function checkAuthBeforePageShow(pageId) {
+        $(pageId).live('pagebeforeshow', function(event, ui) {
+          if(fbAuth.needAuth() == true)
+            $.mobile.changePage($("#fb-auth-page"));
+        });
+      }
 	  </script>
   	
   </head> 
@@ -84,14 +95,26 @@
       </script>
         
 	    <div data-role="header" data-theme="b">
-		    <h1>Facebook Feed</h1>
-		    <a href="#fb-feed-page" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a> 
+		    <h1>Tiny FB</h1>
+		    <a href="#fb-feed-page" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+        <div data-role="navbar">
+          <ul>
+            <li>
+              <a href="#fb-feed-page" class="ui-btn-active" data-icon="home" id="toolbar-button-wall">
+                Wall Feed
+                <img id="wall-load-spinner" src="/public/images/spinner_16.gif" class="hidden" />
+              </a>
+            </li>
+            <li><a href="#fb-new-post-page" data-icon="grid" id="toolbar-button-share">Share Something</a></li>
+          </ul>
+        </div>
 	    </div>
 
 	    <div data-role="content" data-theme="b">	
 	      <p style="text-align:center;" id="fb-loading-top">
 	        <img src="public/images/spinner.gif" /><br/>Loading
 	      </p>
+
 		    <ul data-role="listview" id="fb-feed" style="display:none;">
         </ul>
 	    </div>
@@ -104,10 +127,7 @@
 	    </div>
 	    
       <script>
-        $('#fb-feed-page').live('pagebeforecreate', function(event, ui) {
-          if(fbAuth.needAuth() == true)
-            $.mobile.changePage($("#fb-auth-page"));
-        });
+        checkAuthBeforePageShow('#fb-feed-page');
       </script>	  
     </div>
     <!-- FB Feed Screen -->
@@ -218,16 +238,45 @@
 	    </div>
 	    
 	    <script>
-        $('#fb-feed-item-page').live('pagebeforeshow', function(event, ui) {
-          if(fbAuth.needAuth() == true)
-            $("#auth-url").attr("href", fbAuth.getAuthUrl()).show();
-        });
+        checkAuthBeforePageShow('#fb-feed-item-page');
 	    </script>
     </div>
     <!-- FB Feed Item Screen -->
   
   
-  
+
+
+    <!-- FB New Post Screen -->
+    <div data-role="page" id="fb-new-post-page" data-theme="b">
+      <div data-role="header" data-theme="b">
+        <h1>Share Something...</h1>
+        <a href="#fb-feed-page" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+        <div data-role="navbar">
+          <ul>
+            <li><a href="#fb-feed-page" data-icon="home" id="toolbar-button-wall">Wall Feed</a></li>
+            <li><a href="#fb-new-post-page" class="ui-btn-active" data-icon="grid" id="toolbar-button-share">Share Something</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div data-role="content" data-theme="c">
+        <form action="#" method="get">
+          <div data-role="fieldcontain">
+            <label for="fb-new-post-text">Say Something</label>
+            <textarea cols="50" rows="8" name="fb-new-post-text" id="fb-new-post-text"></textarea>
+          </div>
+          <div data-inline="true" style="text-align:right; float:right;">
+            <img src="public/images/spinner-small-black.gif" id="fb-share-spinner" class="hidden">
+            <a id="share-button" href="javascript:void(0);" data-role="button" data-inline="true" data-icon="grid">Share</a>
+          </div>
+        </form>
+      </div>
+
+      <script>
+        checkAuthBeforePageShow('#fb-new-post-page');
+      </script>
+    </div>
+    <!-- FB Auth Screen -->    
   
   
   
@@ -252,17 +301,11 @@
           else
             $.mobile.changePage($("#fb-feed-page"));
         });
-	    </script>
+      </script>
     </div>
-    <!-- FB Auth Screen -->    
-  
-  
-	  <div style="display:none;">
-	    Feed List
-		  <ul id="feed-items">
-		  </ul>
-	  </div>
-	  
+    <!-- FB Auth Screen -->
+
+    
   </body> 
  
 </html> 

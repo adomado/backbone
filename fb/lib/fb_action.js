@@ -16,9 +16,7 @@ var FBAction = new JS.Class({
     var accessToken = encodeURIComponent("access_token=" + this.fbAccessToken);
     var postData = {accessToken : accessToken};
     
-    this.get(postUrl, postData, function(){
-      postCallback.call();
-    });
+    this.get(postUrl, postData, postCallback);
   },
 
 
@@ -28,14 +26,24 @@ var FBAction = new JS.Class({
     var comment = encodeURIComponent("message=" + commentText);
     var postData = {accessToken : accessToken, data : comment};
     
-    this.get(postUrl, postData, function(){
-      postCallback.call();
-    });    
+    this.get(postUrl, postData, postCallback);
+  },
+
+
+  share : function(message, options, postCallback) {
+    options = options || {};
+    var postUrl = encodeURIComponent(this.graphUrl + "/me/feed");
+    var accessToken = encodeURIComponent("access_token=" + this.fbAccessToken);
+    options.actions = "{'name':'Visit AppStore', 'link':'http://adomado.com/appstore'}";
+    
+    var message = encodeURIComponent("message=" + message + "&actions=" + options.actions);
+    var postData = {accessToken : accessToken, data : message};
+    
+    this.get(postUrl, postData, postCallback);
   },
   
   
   get : function(postUrl, postData, successCallback) {
-    successCallback = successCallback || function(data) {};
     $.getJSON(this.postProxy, {access_token : postData.accessToken, query : postData.data, post_url : postUrl}, successCallback);
   }
 

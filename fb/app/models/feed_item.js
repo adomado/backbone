@@ -24,7 +24,7 @@ var FeedItemModel = Backbone.Model.extend({
   
   initLikes : function() {
     var graphItem = this.get("graphItem");
-    if(graphItem.likes)
+    if(graphItem && graphItem.likes)
     {
       this.set({likeCount : graphItem.likes.count});  
       
@@ -40,7 +40,7 @@ var FeedItemModel = Backbone.Model.extend({
 
   initComments : function() {
     var graphItem = this.get("graphItem");
-    if(graphItem.comments && graphItem.comments.count)
+    if(graphItem && graphItem.comments && graphItem.comments.count)
       this.set({"commentCount" : graphItem.comments.count});
   },
 
@@ -50,22 +50,30 @@ var FeedItemModel = Backbone.Model.extend({
     new FBAction().comment(this.id, commentText, jQuery.proxy(function() {
       // Initate a feedItem refetch...
       this.refresh()
-      /*FeedApp.fbFeed.reFetchItem(this.id, this, function(_this, jsonData) {
-        _this.set({graphItem : jsonData});  // do this before changing commentCount, as chnging the count triggers UI re-render for comments
-        var newCount = _this.get("commentCount") + 1;
-        _this.set({"commentCount" : newCount});
-      });*/
     }, this));
   },
   
 
   // Re-fetches the graphItem
+  // Accepts an optional callback
   refresh : function(callback) {
     FeedApp.fbFeed.reFetchItem(this.id, this, function(_this, jsonData) {
       _this.set({graphItem : jsonData});  // do this before changing commentCount, as chnging the count triggers UI re-render for comments
       _this.initComments();
       _this.initLikes();
+      if(callback)
+        callback();
     });    
+  },
+
+
+  createNewOnFb : function(text, callback) {
+    new FBAction().share(text, {}, jQuery.proxy(function(jsonData) {
+      this.set({id : jsonData.id})
+      this.refresh(jQuery.proxy(function() {
+        callback();
+      }, this));
+    }, this));
   }
   
 });
