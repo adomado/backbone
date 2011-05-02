@@ -42,7 +42,7 @@
         FeedApp = new FeedView(FeedList);
         NotificationList = new NotificationListCollection;
         Notifications = new NotificationView(NotificationList);
-        fbNotificationWatcher = new FBNotificationWatcher(1);
+        fbNotificationWatcher = new FBNotificationWatcher(0.5); // every 30 seconds
       });
 	  </script>
   	
