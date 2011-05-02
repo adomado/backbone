@@ -51,8 +51,10 @@ var FeedView = Backbone.View.extend({
 
   addItemsToList : function(graphItems, direction) {
     for(var i=0; i<graphItems.length; i++) {
-      if(! this.collection.get(graphItems[i].id))  // don't add to FeedList collection if the graphItem already exists in it.. (or it will duplicate content on UI)
+      if(! this.collection.get(graphItems[i].id)) { // don't add to FeedList collection if the graphItem already exists in it.. (or it will duplicate content on UI)
         this.collection.add({"id" : graphItems[i].id, "graphItem" : graphItems[i], "direction" : direction});
+        this.checkIfItemNeedsRefresh(graphItems[i]);
+      }
     }
   },
   
@@ -106,6 +108,25 @@ var FeedView = Backbone.View.extend({
       $("#" + model.id + "__comment-count-infeed").html(commentCount);
       $("#" + model.id + "__item-comments-infeed").show();
     }    
+  },
+
+
+  // fetched graphItem does not has all comment information, refetch it...
+  checkIfItemNeedsRefresh : function(graphItem) {
+    var comments = graphItem.comments;
+    var shouldRefetch = false;
+    if(comments) { 
+      if(comments.data)
+        if(comments.count > comments.data.length) // if received number of comments are lesser than expected
+          shouldRefetch = true;
+        
+      if(!comments.data && comments.count > 0)  // if no comment data was received but count is non-zero
+        shouldRefetch = true;
+
+      if(shouldRefetch == true) {
+        this.collection.get(graphItem.id).refresh();
+      }
+    }
   }
   
 });

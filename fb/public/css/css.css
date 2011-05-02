@@ -1,3 +1,7 @@
+.fb-feed-item {
+  padding-right: 35px !important;
+}
+
 .comment-text {
   font-size: 14px;
 }
@@ -21,6 +25,10 @@ a {
   top: -4px;
 }
 
+#fb-comment-spinner {
+  position: relative;
+}
+
 .hidden {
   display: none;
 }
@@ -31,14 +39,37 @@ a {
   top: 4px;
 }
 
+.comment-pic {
+  padding-right: 5px;
+  width: 32px;
+}
+
+
+#fb-item-new-comment {
+  position: relative;
+}
+
+
+/* Firefox only css */
+@-moz-document url-prefix() {
+  #fb-item-new-comment {
+    top: -10px;
+    width: 55%;
+  }
+
+  #fb-comment-spinner {
+    top: -9px;
+  }
+}
+
+
+/* Chrome only css */
 @media screen and (-webkit-min-device-pixel-ratio:0){
   #fb-like-spinner {
-    position: relative;
     top: 4px;
   }
 
   #fb-comment-spinner {
-    position: relative;
     top: 4px;
   }
 
@@ -49,5 +80,9 @@ a {
 
   #fb-loading-bottom {
     top: 3px;
-  }  
+  }
+
+  #fb-item-new-comment {
+    top: 2px;
+  }
 }

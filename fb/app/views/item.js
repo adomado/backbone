@@ -54,15 +54,16 @@ var ItemView = Backbone.View.extend({
   renderItemComments : function() {
     var appendToId = "#comments";
     $(appendToId).html(""); // cleanup
+    var graphItem = this.feedItem.get("graphItem"); // fetch fresh as comments can be added by user.
     
-    if(this.graphItem.comments && this.graphItem.comments.data && this.graphItem.comments.data.length > 0)
+    if(graphItem.comments && graphItem.comments.data && graphItem.comments.data.length > 0)
     {
-      var comments = this.graphItem.comments.data;
+      var comments = graphItem.comments.data;
       for(var i=0; i<comments.length; i++)
         this.renderComment(comments[i], appendToId);
         
-      if(this.graphItem.comments.count > this.graphItem.comments.data.length)
-        $("#more-comments").attr("href", this.graphItem.actions[0].link).show();      
+      if(graphItem.comments.count > graphItem.comments.data.length)
+        $("#more-comments").attr("href", graphItem.actions[0].link).show();
     }
     
     $("#fb-feed-item-comments").show(); // show anyways (so that user can add a new comment)
@@ -101,7 +102,7 @@ var ItemView = Backbone.View.extend({
 
   newComment : function() {
     $("#fb-comment-spinner").show();
-    this.feedItem.addComment()
+    this.feedItem.addComment($("#fb-item-new-comment").val());
   },
 
   onCommentCountChanged : function() {
@@ -109,6 +110,7 @@ var ItemView = Backbone.View.extend({
     this.renderItemComments();
     $("#comment-count").html(this.feedItem.get("commentCount"));
     $("#fb-comment-spinner").hide();
+    $("#fb-item-new-comment").val("");
   }
   
 });
