@@ -10,6 +10,7 @@ var FeedView = Backbone.View.extend({
     this.collection.bind("change:commentCount", this.renderCommentCount);
   
     $("#more-feed").click(jQuery.proxy(this.fetchOlderFeed, this));  // save the 'this' calling context
+    $("#toolbar-button-wall").live("click", jQuery.proxy(this._fetchNewerFeed, this));
     this.initMeAndFeed();
   },
 
@@ -25,10 +26,15 @@ var FeedView = Backbone.View.extend({
 
   // Keeps looping every N minutes...
   fetchNewerFeed : function() {
-    this.waitForData();
-    this.fbFeed.getNewerFeed();
+    this._fetchNewerFeed();
     var timeout = 0.5 * 60 * 1000;
     setTimeout(jQuery.proxy(this.fetchNewerFeed, this), timeout);
+  },
+
+
+  _fetchNewerFeed : function() {  // code refactor for usage from multiple locations
+    this.waitForData();
+    this.fbFeed.getNewerFeed();    
   },
 
 
