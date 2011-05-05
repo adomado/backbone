@@ -36,9 +36,9 @@
 
 	  <script>
 	    var FeedList, FeedApp, fbAuth, fbFeed, fbMe, appApi, CurrentFeedItem, NotificationList, Notifications, fbNotificationWatcher, FeedShare;
-      fbAuth = new FBAuth("21577534106", document.location.href, function() { console.log("TODO - auth reinforce needed"); });
 
 	    $(document).ready(function() {
+        fbAuth = new FBAuth("21577534106", document.location.href, function() { console.log("TODO - auth reinforce needed"); });
         FeedList = new FeedListCollection;
         FeedApp = new FeedView(FeedList);
         NotificationList = new NotificationListCollection;
@@ -51,7 +51,7 @@
       // Show the auth page if user is not connected with FB
       function checkAuthBeforePageShow(pageId) {
         $(pageId).live('pagebeforeshow', function(event, ui) {
-          if(fbAuth.needAuth() == true)
+          if(fbAuth && fbAuth.needAuth() == true)
             $.mobile.changePage($("#fb-auth-page"));
         });
       }
@@ -296,10 +296,12 @@
 	    
 	    <script>
         $('#fb-auth-page').live('pagebeforeshow', function(event, ui) {
-          if(fbAuth.needAuth() == true)
-            $("#auth-url").attr("href", fbAuth.getAuthUrl()).show();
-          else
-            $.mobile.changePage($("#fb-feed-page"));
+          if(fbAuth) {
+            if(fbAuth.needAuth() == true)
+              $("#auth-url").attr("href", fbAuth.getAuthUrl()).show();
+            else
+              $.mobile.changePage($("#fb-feed-page"));
+          }
         });
       </script>
     </div>

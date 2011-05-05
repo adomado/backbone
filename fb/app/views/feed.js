@@ -20,7 +20,7 @@ var FeedView = Backbone.View.extend({
     new FBMe(this, function(_this, jsonDataMe) {
       _this.fbFeed = new FBFeed(_this, undefined, _this.feedReadyCallbackPrepend, _this.feedReadyCallbackAppend);  // Initial fetch
       _this.fetchNewerFeed();  // continuesly loop to check for any newer feeds
-    })
+    });
   },
 
 
@@ -59,11 +59,13 @@ var FeedView = Backbone.View.extend({
   
 
   addItemsToList : function(graphItems, direction) {
-    for(var i=0; i<graphItems.length; i++) {
-      if(! this.collection.get(graphItems[i].id)) { // don't add to FeedList collection if the graphItem already exists in it.. (or it will duplicate content on UI)
-        this.collection.add({"id" : graphItems[i].id, "graphItem" : graphItems[i], "direction" : direction});
-        this.checkIfItemNeedsRefresh(graphItems[i]);
-      }
+    if(graphItems) {
+      for(var i=0; i<graphItems.length; i++) {
+        if(! this.collection.get(graphItems[i].id)) { // don't add to FeedList collection if the graphItem already exists in it.. (or it will duplicate content on UI)
+          this.collection.add({"id" : graphItems[i].id, "graphItem" : graphItems[i], "direction" : direction});
+          this.checkIfItemNeedsRefresh(graphItems[i]);
+        }
+      }      
     }
   },
   
