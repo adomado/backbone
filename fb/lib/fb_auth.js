@@ -41,7 +41,7 @@ var FBAuth = new JS.Class({
         var accessToken = document.location.hash.split("#access_token=")[1].split("&")[0];
         console.log(accessToken);
         this.setItem("fbAccessToken", accessToken);
-        document.location.href = "http://" + document.location.host + document.location.pathname; // Trickery!
+        document.location.href = "http://" + document.location.host; // Trickery!
       } catch(error) {
         return false;
       }
