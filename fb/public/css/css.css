@@ -88,6 +88,10 @@ label.ui-input-text {
   .infeed-likes-comments {
     margin-top: 2px;
   }  
+  
+  div.ui-content {
+    overflow-y: hidden;
+  }
 }
 
 
