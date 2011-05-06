@@ -4,11 +4,13 @@
   <head>
     <script>
       function initApiManager() {
-        appApi = new ApiManager(ApiUtil.getQueryStringParam("uuid_pvt"), ApiUtil.getQueryStringParam("app_id"), {isDev : true, $ : $});
+console.log("==>" + ApiUtil.getQueryParam("uuid_pvt", {splitter : "&amp;"}));
+console.log("==>" + ApiUtil.getQueryParam("app_id", {splitter : "&amp;"}));
+        appApi = new ApiManager(ApiUtil.getQueryParam("uuid_pvt", {splitter : "&amp;"}), ApiUtil.getQueryParam("app_id", {splitter : "&amp;"}), {isDev : true, $ : $});
       }
     </script>
 
-    <title>Facebook Feed</title> 
+    <title>Social Hub</title>
   	<link rel="stylesheet" href="/public/css/jquery-mobile/jquery.mobile-1.0a4.1.min.css" />
   	<link rel="stylesheet" href="/public/css/css.css" />
     <script src="http://192.168.1.6:3000/javascripts/app_api_jquery_packaged.js" onload="initApiManager()"></script>
@@ -95,13 +97,13 @@
       </script>
         
 	    <div data-role="header" data-theme="b">
-		    <h1>Tiny FB</h1>
+		    <h1>Social Hub</h1>
 		    <a href="#fb-feed-page" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
         <div data-role="navbar">
           <ul>
             <li>
               <a href="#fb-feed-page" class="ui-btn-active" data-icon="home" id="toolbar-button-wall">
-                Wall Feed
+                Facebook Feed
                 <img id="wall-load-spinner" src="/public/images/spinner_16.gif" class="hidden" />
               </a>
             </li>
@@ -253,7 +255,7 @@
         <a href="#fb-feed-page" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
         <div data-role="navbar">
           <ul>
-            <li><a href="#fb-feed-page" data-icon="home" id="toolbar-button-wall">Wall Feed</a></li>
+            <li><a href="#fb-feed-page" data-icon="home" id="toolbar-button-wall">Facebook Feed</a></li>
             <li><a href="#fb-new-post-page" class="ui-btn-active" data-icon="grid" id="toolbar-button-share">Share Something</a></li>
           </ul>
         </div>

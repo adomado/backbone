@@ -38,10 +38,13 @@ var FBAuth = new JS.Class({
     
     getAccessTokenFromUrl : function() {
       try {
-        var accessToken = document.location.hash.split("#access_token=")[1].split("&")[0];
-        console.log(accessToken);
-        this.setItem("fbAccessToken", accessToken);
-        document.location.href = "http://" + document.location.host;
+        if(document.location.hash != "")
+        {
+          var accessToken = document.location.hash.split("#access_token=")[1].split("&")[0];
+          console.log(accessToken);
+          this.setItem("fbAccessToken", accessToken);
+          document.location.href = "http://" + document.location.host;
+        }
       } catch(error) {
         return false;
       }
