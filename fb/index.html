@@ -4,9 +4,7 @@
   <head>
     <script>
       function initApiManager() {
-console.log("==>" + ApiUtil.getQueryParam("uuid_pvt", {splitter : "&amp;"}));
-console.log("==>" + ApiUtil.getQueryParam("app_id", {splitter : "&amp;"}));
-        appApi = new ApiManager(ApiUtil.getQueryParam("uuid_pvt", {splitter : "&amp;"}), ApiUtil.getQueryParam("app_id", {splitter : "&amp;"}), {isDev : true, $ : $});
+        appApi = new ApiManager({title : "Social Hub", image : "http://192.168.1.6:4567/public/images/fb_48.png"}, {isDev : true, $ : $});
       }
     </script>
 
@@ -45,7 +43,7 @@ console.log("==>" + ApiUtil.getQueryParam("app_id", {splitter : "&amp;"}));
         FeedApp = new FeedView(FeedList);
         NotificationList = new NotificationListCollection;
         Notifications = new NotificationView(NotificationList);
-        fbNotificationWatcher = new FBNotificationWatcher(0.5); // every 30 seconds
+        fbNotificationWatcher = new FBNotificationWatcher(0.05); // every 30 seconds
         FeedShare = new ShareView();
       });
 
