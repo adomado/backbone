@@ -10,6 +10,7 @@ var NotificationItemModel = Backbone.Model.extend({
   validate : function() {
     if(window.NotificationList.get(this.get("data").object_id))
       return "Error, notification already exists!";
+
     else
       window.NotificationList.add(this);
   }
