@@ -7,7 +7,7 @@ require "json"
 require "ruby-debug"
 
 
-set :public, File.dirname(__FILE__) + '/fb'
+set :public, File.dirname(__FILE__) + '/public'
 
 
 get '/' do
@@ -25,6 +25,6 @@ get '/post' do
   post_command += "#{CGI.unescape(params["query"])}" if params["query"] # not passed in like, but is passed in comment...
   post_command += "\""
   post_command += " '#{CGI.unescape(params["post_url"])}'"
-  puts post_command  
+  puts post_command
   return IO.popen(post_command).read
 end

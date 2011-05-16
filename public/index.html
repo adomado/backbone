@@ -4,20 +4,20 @@
   <head>
     <script>
       function initApiManager() {
-        appApi = new ApiManager({title : "Social Hub", image : "http://192.168.1.6:4567/public/images/fb_48.png"}, {isDev : false, $ : $, adomadoServer : "http://localhost"});
+        appApi = new ApiManager({title : "Social Hub", image : "http://192.168.1.6:4567/static/images/fb_48.png"}, {isDev : false, $ : $, adomadoServer : "http://localhost"});
       }
     </script>
 
     <title>Social Hub</title>
-  	<link rel="stylesheet" href="/public/css/jquery-mobile/jquery.mobile-1.0a4.1.min.css" />
-  	<link rel="stylesheet" href="/public/css/css.css" />
-    <link rel="stylesheet" href="/public/css/apprise/apprise.css" />
-    <!--[if lt IE 9]> <link rel="stylesheet" href="/public/css/ie.css" /> <![endif]-->
+  	<link rel="stylesheet" href="/static/css/jquery-mobile/jquery.mobile-1.0a4.1.min.css" />
+  	<link rel="stylesheet" href="/static/css/css.css" />
+    <link rel="stylesheet" href="/static/css/apprise/apprise.css" />
+    <!--[if lt IE 9]> <link rel="stylesheet" href="/static/css/ie.css" /> <![endif]-->
     <script src="http://adomado.com/javascripts/app_api_jquery_packaged.js" onload="initApiManager()"></script>
-    <script src="/public/js/backbone/json2.js"></script>
-    <script src="/public/js/backbone/underscore-1.1.3.js"></script>
-    <script src="/public/js/backbone/backbone.js"></script>
-    <script src="/public/js/backbone/backbone-localstorage.js"></script>
+    <script src="/static/js/backbone/json2.js"></script>
+    <script src="/static/js/backbone/underscore-1.1.3.js"></script>
+    <script src="/static/js/backbone/backbone.js"></script>
+    <script src="/static/js/backbone/backbone-localstorage.js"></script>
     <script src="/lib/fb_storage.js"></script>
     <script src="/lib/fb_auth.js"></script>
     <script src="/lib/fb_feed.js?cb=1"></script>
@@ -32,10 +32,10 @@
     <script src="/app/views/item.js?cb=2"></script>
     <script src="/app/views/notifications.js"></script>
     <script src="/app/views/share.js"></script>
-    <script src="/public/js/icanhaz/ICanHaz.min.js"></script>
-    <script src="/public/js/autolink/jquery.autolink.js"></script>
-    <script src="/public/js/apprise/apprise-1.5.js"></script>
-    <script src="/public/js/jquery-mobile/jquery.mobile-1.0a4.1.min.js"></script>
+    <script src="/static/js/icanhaz/ICanHaz.min.js"></script>
+    <script src="/static/js/autolink/jquery.autolink.js"></script>
+    <script src="/static/js/apprise/apprise-1.5.js"></script>
+    <script src="/static/js/jquery-mobile/jquery.mobile-1.0a4.1.min.js"></script>
 
 	  <script>
 	    var FeedList, FeedApp, fbAuth, fbFeed, fbMe, appApi, CurrentFeedItem, NotificationList, Notifications, fbNotificationWatcher, FeedShare;
@@ -81,10 +81,10 @@
             <p class="infeed-likes-comments">
               <small>
                 <span id="{{itemId}}__item-likes-infeed" style="{{^likeCount}}display:none;{{/likeCount}}">
-                  <span id="{{itemId}}__like-count-infeed">{{likeCount}}</span> <img class="like-comment-image" src="public/images/like_16.png"/> &nbsp; &nbsp;
+                  <span id="{{itemId}}__like-count-infeed">{{likeCount}}</span> <img class="like-comment-image" src="/static/images/like_16.png"/> &nbsp; &nbsp;
                 </span>
                 <span id="{{itemId}}__item-comments-infeed" style="{{^commentCount}}display:none;{{/commentCount}}">
-                  <span id="{{itemId}}__comment-count-infeed">{{commentCount}}</span> <img class="like-comment-image" src="public/images/comment.png"/> &nbsp; &nbsp;
+                  <span id="{{itemId}}__comment-count-infeed">{{commentCount}}</span> <img class="like-comment-image" src="/static/images/comment.png"/> &nbsp; &nbsp;
                 </span>
 
                 {{^likeCount}}
@@ -106,7 +106,7 @@
             <li>
               <a href="#fb-feed-page" class="ui-btn-active" data-icon="home" id="toolbar-button-wall">
                 Facebook Feed
-                <img id="wall-load-spinner" src="/public/images/spinner_16.gif" class="hidden" />
+                <img id="wall-load-spinner" src="/static/images/spinner_16.gif" class="hidden" />
               </a>
             </li>
             <li><a href="#fb-new-post-page" data-icon="grid" id="toolbar-button-share">Share Something</a></li>
@@ -116,7 +116,7 @@
 
 	    <div data-role="content" data-theme="b">
 	      <p style="text-align:center;" id="fb-loading-top">
-	        <img src="public/images/spinner.gif" /><br/>Loading
+	        <img src="/static/images/spinner.gif" /><br/>Loading
 	      </p>
 
 		    <ul data-role="listview" id="fb-feed" style="display:none;">
@@ -126,7 +126,7 @@
 	    <div data-role="footer" style="padding:5px 0px" data-theme="b">
         <div data-inline="true" style="text-align:center;">
 	        <a href="#" data-role="button" data-inline="true" data-icon="arrow-d" id="more-feed">Show More</a>
-          <img src="public/images/spinner-small.gif" id="fb-loading-bottom" class="hidden">
+          <img src="/static/images/spinner-small.gif" id="fb-loading-bottom" class="hidden">
         </div>
 	    </div>
 
@@ -180,10 +180,10 @@
               <div style="text-align:right; float:right;">
                 <small>
                   <span id="item-likes" style="{{^likeCount}}display:none;{{/likeCount}}">
-                    <span id="like-count">{{likeCount}}</span> <img class="like-comment-image" src="public/images/like_16.png"/> &nbsp; &nbsp;
+                    <span id="like-count">{{likeCount}}</span> <img class="like-comment-image" src="/static/images/like_16.png"/> &nbsp; &nbsp;
                   </span>
                   <span id="item-comments" style="{{^commentCount}}display:none;{{/commentCount}}">
-                    <span id="comment-count">{{commentCount}}</span> <img class="like-comment-image" src="public/images/comment.png"/> &nbsp; &nbsp;
+                    <span id="comment-count">{{commentCount}}</span> <img class="like-comment-image" src="/static/images/comment.png"/> &nbsp; &nbsp;
                   </span>
                 </small>
               </div>
@@ -223,7 +223,7 @@
             <input type="text" name="fb-item-new-comment" id="fb-item-new-comment" value="" style="margin-bottom:5px;" />
             <small>
               <a id="fb-item-new-comment-button" href="javascript:void(0);" data-role="button" data-inline="true" data-icon="grid">Comment</a>
-              <img src="public/images/spinner-small-black.gif" id="fb-comment-spinner" class="hidden">
+              <img src="/static/images/spinner-small-black.gif" id="fb-comment-spinner" class="hidden">
             </small>
           </div>
 	        <div id="comments"></div>
@@ -232,8 +232,8 @@
 
         <!-- Like & back -->
         <div data-inline="true" style="text-align:right; float:right;">
-          <img src="public/images/spinner-small-black.gif" id="fb-like-spinner" class="hidden">
-          <img src="public/images/ok.png" id="fb-like-ok" class="hidden">
+          <img src="/static/images/spinner-small-black.gif" id="fb-like-spinner" class="hidden">
+          <img src="/static/images/ok.png" id="fb-like-ok" class="hidden">
 	        <a id="like-button" href="javascript:void(0);" data-role="button" data-inline="true" data-icon="star">Like</a>
         </div>
         <div data-inline="true" style="text-align:left; float:left;">
@@ -270,7 +270,7 @@
             <textarea cols="50" rows="8" name="fb-new-post-text" id="fb-new-post-text"></textarea>
           </div>
           <div data-inline="true" style="text-align:right; float:right;">
-            <img src="public/images/spinner-small-black.gif" id="fb-share-spinner" class="hidden">
+            <img src="/static/images/spinner-small-black.gif" id="fb-share-spinner" class="hidden">
             <a id="share-button" href="javascript:void(0);" data-role="button" data-inline="true" data-icon="grid">Share</a>
           </div>
         </form>
@@ -293,9 +293,9 @@
 	    </div>
 
 	    <div data-role="content" data-theme="b">
-        <div class="center" id="auth-loading"><img src="/public/images/spinner_16.gif"/></div>
+        <div class="center" id="auth-loading"><img src="/static/images/spinner_16.gif"/></div>
         <div class="center" id="auth-connect">
-          <h2><a href="#" id="auth-url" style="text-decoration:none;"><img src="/public/images/fb-connect.png"/><br/>Facebook Connect</a></h2>
+          <h2><a href="#" id="auth-url" style="text-decoration:none;"><img src="/static/images/fb-connect.png"/><br/>Facebook Connect</a></h2>
         </div>
 	    </div>
 
