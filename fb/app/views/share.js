@@ -16,14 +16,19 @@ var ShareView = Backbone.View.extend({
 
 
   share : function() {
-    $("#fb-share-spinner").show();
-    
     var message = $("#fb-new-post-text").val();
-    new FeedItemModel().createNewOnFb(message, function() {
-      $("#fb-new-post-text").val("");
-      window.FeedApp.fetchNewerFeed();
-      $.mobile.changePage($("#fb-feed-page"));
-    });
+
+    if(message.length > 0)
+    {
+      $("#fb-share-spinner").show();
+      new FeedItemModel().createNewOnFb(message, function() {
+        $("#fb-new-post-text").val("");
+        window.FeedApp.fetchNewerFeed();
+        $.mobile.changePage($("#fb-feed-page"));
+      });
+    }
+    else
+      apprise("Enter something to share...");
   }
-  
+
 });

@@ -1,0 +1,24 @@
+#fb-like-spinner {
+  position: relative;
+  top: -8px;
+}
+
+#fb-like-ok {
+  position: relative;
+  top : -6px;
+}
+
+#fb-comment-spinner {
+  position: relative;
+  top : -17px;
+}
+
+#fb-item-new-comment {
+  position: relative;
+  top: -15px;
+}
+
+#fb-share-spinner {
+  position: relative;
+  top: -10px;
+}

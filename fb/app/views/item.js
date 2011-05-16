@@ -3,11 +3,11 @@ var ItemView = Backbone.View.extend({
 
   initialize : function(feedItemId) {
     _.bindAll(this, "onLikeChanged", "onCommentCountChanged"); // proxy the 'this' context back to the ItemView object
-    
+
     this.feedItemId = feedItemId;
     this.feedItem = window.FeedList.get(feedItemId)
     this.graphItem = this.feedItem.get("graphItem");
-    
+
     this.feedItem.bind("change:liked", this.onLikeChanged);
     this.feedItem.bind("change:commentCount", this.onCommentCountChanged);
 
@@ -15,8 +15,8 @@ var ItemView = Backbone.View.extend({
 
     this.detachCallbacksOnPageHide();
   },
-  
-  
+
+
   renderItemDetail : function() {
     // this should point to the item clicked
     var likeCount = this.feedItem.get("likeCount");
@@ -24,7 +24,7 @@ var ItemView = Backbone.View.extend({
     var feedItemData = {
       title: this.graphItem.message || this.graphItem.name,
       fromUserPic : "http://graph.facebook.com/" + this.graphItem.from.id + "/picture?type=normal",
-      fromUserName : this.graphItem.from.name,      
+      fromUserName : this.graphItem.from.name,
       description : this.graphItem.description || this.graphItem.caption,
       picture : this.graphItem.picture || false,
       likeCount : likeCount ? likeCount : false,
@@ -35,37 +35,37 @@ var ItemView = Backbone.View.extend({
       permalink : this.graphItem.actions ? this.graphItem.actions[0].link : ("http://www.facebook.com/" + this.graphItem.from.id + "/posts/" + this.graphItem.id),
       itemId : this.graphItem.id,
       linkTo : this.graphItem.link
-    };    
-    $("#fb-feed-item-detail").html(ich.fbFeedItemDetail(feedItemData));  
-    
+    };
+    $("#fb-feed-item-detail").html(ich.fbFeedItemDetail(feedItemData));
+
     this.renderItemComments();
     $("#fb-feed-item-detail").autolink();
-    
+
     $("#like-button").live("click", jQuery.proxy(this.like, this));  // proxy saves the 'this' context
     $("#fb-item-new-comment-button").live("click", jQuery.proxy(this.newComment, this));  // proxy saves the 'this' context
   },
-  
-  
+
+
   renderItemComments : function() {
     var appendToId = "#comments";
     $(appendToId).html(""); // cleanup
     var graphItem = this.feedItem.get("graphItem"); // fetch fresh as comments can be added by user.
-    
+
     if(graphItem.comments && graphItem.comments.data && graphItem.comments.data.length > 0)
     {
       var comments = graphItem.comments.data;
       for(var i=0; i<comments.length; i++)
         this.renderComment(comments[i], appendToId);
-        
+
       if(graphItem.comments.count > graphItem.comments.data.length)
         $("#more-comments").attr("href", graphItem.actions[0].link).show();
     }
-    
+
     $("#fb-feed-item-comments").show(); // show anyways (so that user can add a new comment)
-    this.feedItem.isLiked() == true ? $("#fb-like-ok").show() : $("#fb-like-ok").hide();    
+    this.feedItem.isLiked() == true ? $("#fb-like-ok").show() : $("#fb-like-ok").hide();
   },
-  
-  
+
+
   renderComment : function(commentItem, appendToId) {
     var commentHtml;
     var commentData = {
@@ -73,18 +73,18 @@ var ItemView = Backbone.View.extend({
       commentText : commentItem.message,
       userProfleLink : "http://www.facebook.com/profile.php?id=" + commentItem.from.id,
     }
-    
+
     commentHtml = ich.fbFeedItemComment(commentData);
     $(appendToId).append(commentHtml);
   },
-  
-  
+
+
   like : function() {
     $("#fb-like-spinner").show();
     this.feedItem.like();
   },
-  
-  
+
+
   onLikeChanged : function() {
     if(this.feedItem.isLiked() == true) {
       $("#fb-like-spinner").hide();
@@ -96,8 +96,14 @@ var ItemView = Backbone.View.extend({
 
 
   newComment : function() {
-    $("#fb-comment-spinner").show();
-    this.feedItem.addComment($("#fb-item-new-comment").val());
+    var commentText = $("#fb-item-new-comment").val();
+    if(commentText.length > 1)
+    {
+      $("#fb-comment-spinner").show();
+      this.feedItem.addComment(commentText);
+    }
+    else
+      apprise("Enter a comment first...");
   },
 
   onCommentCountChanged : function() {
@@ -107,7 +113,7 @@ var ItemView = Backbone.View.extend({
     $("#fb-comment-spinner").hide();
     $("#fb-item-new-comment").val("");
   },
-  
+
 
   // Makes jQuery detach callbacks when the item details page is hidden
   detachCallbacksOnPageHide : function() {
@@ -116,7 +122,7 @@ var ItemView = Backbone.View.extend({
       $("#like-button").die("click"); // so that we saftely disconnect from a previously viewed feedItem
       $("#fb-item-new-comment-button").die("click");
       return true;
-    });      
+    });
   }
-  
+
 });
