@@ -44,6 +44,13 @@ var FBAuth = new JS.Class({
           var accessToken = document.location.hash.split("#access_token=")[1].split("&")[0];
           console.log(accessToken);
           this.setItem("fbAccessToken", accessToken);
+
+          // If we got auth in this window, that means we are a child window!
+          // Reload the parent (as fbAccessToken is now available in localStorage) & close ourself (the child window)
+          window.opener.document.location.reload();
+          window.close();
+
+          // Just in case, window.close fails!
           document.location.href = "http://" + document.location.host;
         }
       } catch(error) {

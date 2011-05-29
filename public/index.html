@@ -4,13 +4,13 @@
   <head>
     <script>
       function initApiManager() {
-        appApi = new ApiManager({title : "Social Hub", image : "http://192.168.1.6:4567/static/images/fb_48.png"}, {isDev : false, $ : $, adomadoServer : "http://localhost"});
+        window.appApi = new ApiManager({title : "Social Hub", image : "http://hub.adomado.com/static/images/fb_48.png"}, {isDev : false, $ : $, adomadoServer : "http://localhost"});
       }
     </script>
 
     <title>Social Hub</title>
-  	<link rel="stylesheet" href="/static/css/jquery-mobile/jquery.mobile-1.0a4.1.min.css" />
-  	<link rel="stylesheet" href="/static/css/css.css" />
+    <link rel="stylesheet" href="/static/css/jquery-mobile/jquery.mobile-1.0a4.1.min.css" />
+    <link rel="stylesheet" href="/static/css/css.css" />
     <link rel="stylesheet" href="/static/css/apprise/apprise.css" />
     <!--[if lt IE 9]> <link rel="stylesheet" href="/static/css/ie.css" /> <![endif]-->
     <script src="http://adomado.com/javascripts/app_api_jquery_packaged.js" onload="initApiManager()"></script>
@@ -41,7 +41,9 @@
 	    var FeedList, FeedApp, fbAuth, fbFeed, fbMe, appApi, CurrentFeedItem, NotificationList, Notifications, fbNotificationWatcher, FeedShare;
 
 	    $(document).ready(function() {
-        fbAuth = new FBAuth("21577534106", document.location.href, function() { console.log("TODO - auth reinforce needed"); });
+        var fbAppIdDev = "102686123155055";
+        var fbAppIdProd = "21577534106";
+        fbAuth = new FBAuth(fbAppIdDev, document.location.href, function() { console.log("TODO - auth reinforce needed"); });
         prepareAuthConnectPage();
         FeedList = new FeedListCollection;
         FeedApp = new FeedView(FeedList);
@@ -295,14 +297,18 @@
 	    <div data-role="content" data-theme="b">
         <div class="center" id="auth-loading"><img src="/static/images/spinner_16.gif"/></div>
         <div class="center" id="auth-connect">
-          <h2><a href="#" id="auth-url" style="text-decoration:none;"><img src="/static/images/fb-connect.png"/><br/>Facebook Connect</a></h2>
+          <h2><a href="javascript:void(0);" id="auth-url" style="text-decoration:none;"><img src="/static/images/fb-connect.png"/><br/>Facebook Connect</a></h2>
         </div>
 	    </div>
 
 	    <script>
+        var child;
         function prepareAuthConnectPage() {
           $("#auth-loading").hide();
-          $("#auth-url").attr("href", fbAuth.getAuthUrl()).show();
+          $("#auth-url").click(function() {
+            window.open(fbAuth.getAuthUrl());
+          });
+
           $("#auth-connect").show();
         }
 
