@@ -43,7 +43,7 @@
 	    $(document).ready(function() {
         var fbAppIdDev = "102686123155055";
         var fbAppIdProd = "21577534106";
-        fbAuth = new FBAuth(fbAppIdDev, document.location.href, function() { console.log("TODO - auth reinforce needed"); });
+        fbAuth = new FBAuth(fbAppIdProd, document.location.href, function() { console.log("TODO - auth reinforce needed"); });
         prepareAuthConnectPage();
         FeedList = new FeedListCollection;
         FeedApp = new FeedView(FeedList);
