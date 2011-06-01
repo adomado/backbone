@@ -42,7 +42,6 @@ var FBAuth = new JS.Class({
         if(document.location.hash != "")
         {
           var accessToken = document.location.hash.split("#access_token=")[1].split("&")[0];
-          console.log(accessToken);
           this.setItem("fbAccessToken", accessToken);
 
           // If we got auth in this window, that means we are a child window!
